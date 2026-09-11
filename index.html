@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#7c3aed">
+<title>Kids Daily Stars</title>
+<style>
+:root{
+  --bg:#f7f8fd;--card:#fff;--text:#22223b;--muted:#77778c;--border:#e9e7f1;
+  --purple:#7c3aed;--pink:#ec4899;--blue:#3b82f6;--green:#22c55e;--gold:#f59e0b;
+  --kid1:#7c3aed;--kid2:#ec4899;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text)}
+body{
+  background:
+    radial-gradient(circle at 10% 0,#fdebf5 0,transparent 28%),
+    radial-gradient(circle at 100% 0,#e9f4ff 0,transparent 32%),
+    linear-gradient(180deg,#faf8ff,#f5fbff);
+}
+button,input,select{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.app{max-width:980px;margin:auto;padding:18px 16px 105px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#7c3aed,#ec4899);display:grid;place-items:center;color:#fff;font-size:24px;box-shadow:0 8px 20px #7c3aed33}
+.title{font-size:24px;font-weight:950;letter-spacing:-.4px}
+.subtitle{font-size:11px;color:var(--muted);font-weight:800}
+.sound-btn{border:1px solid var(--border);background:#fff;width:46px;height:46px;border-radius:15px;font-size:20px}
+
+.profiles-wrap{display:flex;gap:10px;overflow:auto;padding-bottom:3px;margin-bottom:14px}
+.profile{
+  min-width:220px;border:2px solid transparent;border-radius:22px;background:#ffffffdd;padding:12px;
+  display:flex;align-items:center;gap:10px;text-align:left;box-shadow:0 8px 22px #3d315315;transition:.18s
+}
+.profile.active{border-color:var(--accent)}
+.profile:active{transform:scale(.98)}
+.avatar{width:56px;height:56px;border-radius:18px;background:#f7f3ff;display:grid;place-items:center;font-size:34px;flex:none}
+.pname{font-size:18px;font-weight:950}
+.pscore{font-size:11px;color:var(--muted);font-weight:800;margin-top:2px}
+
+.hero{position:relative;overflow:hidden;border-radius:28px;padding:22px;color:#fff;background:linear-gradient(135deg,var(--kid1),var(--kid2));box-shadow:0 14px 34px color-mix(in srgb,var(--kid1) 28%,transparent)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:#fff1}
+.hero:before{width:170px;height:170px;right:-55px;top:-75px}
+.hero:after{width:110px;height:110px;right:40px;bottom:-65px}
+.hero h1{position:relative;margin:0;font-size:30px;z-index:2}
+.date{position:relative;z-index:2;font-size:13px;font-weight:700;opacity:.9;margin-top:4px}
+.hero-stats{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}
+.stat{background:#ffffff1f;border:1px solid #ffffff32;border-radius:17px;padding:11px;backdrop-filter:blur(8px)}
+.stat .n{font-size:24px;font-weight:950}
+.stat .l{font-size:10px;font-weight:900;opacity:.9;margin-top:2px}
+.goal{position:relative;z-index:2;margin-top:15px}
+.goaltext{display:flex;justify-content:space-between;font-size:11px;font-weight:900;margin-bottom:6px}
+.track{height:13px;border-radius:999px;background:#ffffff30;overflow:hidden}
+.bar{height:100%;border-radius:999px;background:#fff;width:0;transition:width .4s ease}
+
+.encourage{text-align:center;margin:14px 0 4px;font-size:14px;font-weight:900;color:#5f5c72}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:18px 2px 9px}
+.section-title{font-size:20px;font-weight:950}
+.section-meta{font-size:11px;color:var(--muted);font-weight:800}
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.task{position:relative;overflow:hidden;border:1px solid var(--border);background:#ffffffed;border-radius:20px;padding:14px;display:flex;align-items:center;gap:11px;text-align:left;box-shadow:0 7px 20px #2e29430e;transition:.18s}
+.task:active{transform:scale(.975)}
+.task.done{opacity:.68}
+.task.done .task-name{text-decoration:line-through}
+.task-icon{width:43px;height:43px;border-radius:14px;background:#f7f4ff;display:grid;place-items:center;font-size:24px;flex:none}
+.task-main{flex:1;min-width:0}
+.task-name{font-size:15px;font-weight:900}
+.task-points{font-size:11px;color:var(--muted);font-weight:800;margin-top:4px}
+.check{width:34px;height:34px;border-radius:12px;border:2px solid var(--kid1);display:grid;place-items:center;flex:none;background:#fff;color:#fff;font-size:20px;font-weight:950}
+.task.done .check{background:var(--kid1)}
+.star-float{position:absolute;font-size:22px;pointer-events:none;animation:starFloat .85s ease-out forwards;z-index:4}
+@keyframes starFloat{0%{opacity:0;transform:translateY(8px) scale(.4)}25%{opacity:1}100%{opacity:0;transform:translateY(-55px) scale(1.25) rotate(20deg)}}
+
+.panel{display:none}.panel.active{display:block}
+.card{background:#ffffffec;border:1px solid var(--border);border-radius:22px;padding:17px;box-shadow:0 8px 22px #2e29430e;margin-bottom:12px}
+.month-total{text-align:center}
+.month-total .big{font-size:50px;font-weight:950;background:linear-gradient(135deg,var(--kid1),var(--kid2));-webkit-background-clip:text;color:transparent}
+.month-total .small{font-size:12px;color:var(--muted);font-weight:850}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dow{text-align:center;font-size:10px;color:var(--muted);font-weight:900}
+.day{background:#fff;border:1px solid var(--border);border-radius:13px;min-height:68px;padding:7px 3px;text-align:center}
+.day.today{border:2px solid var(--kid1)}
+.day .num{font-weight:900}
+.day .pts{font-size:10px;color:var(--muted);font-weight:800;margin-top:5px}
+.day .star{font-size:14px;margin-top:2px}
+
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.badge{background:#fff;border:1px solid var(--border);border-radius:18px;padding:14px;text-align:center}
+.badge.locked{opacity:.45;filter:grayscale(1)}
+.badge .ico{font-size:34px}
+.badge .name{font-size:12px;font-weight:950;margin-top:6px}
+.badge .desc{font-size:9px;color:var(--muted);font-weight:750;margin-top:3px}
+
+/* REWARDS MAP */
+.reward-summary{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.reward-summary strong{font-size:19px}
+.reward-summary span{font-size:12px;color:var(--muted);font-weight:800}
+.map-shell{
+  position:relative;overflow:hidden;border-radius:28px;border:1px solid #dfe8f2;
+  background:linear-gradient(#bfe8ff 0 35%,#d9f7cf 35% 100%);
+  min-height:720px;box-shadow:0 12px 30px #41516f14
+}
+.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.85}
+.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud.c1{width:95px;height:28px;top:36px;left:7%}.cloud.c1:before{width:42px;height:42px;left:15px;top:-19px}.cloud.c1:after{width:35px;height:35px;right:15px;top:-14px}
+.cloud.c2{width:110px;height:30px;top:70px;right:8%}.cloud.c2:before{width:48px;height:48px;left:18px;top:-21px}.cloud.c2:after{width:38px;height:38px;right:16px;top:-15px}
+.map-title{position:absolute;left:18px;top:18px;background:#8b5a2b;color:#fff;padding:11px 17px;border-radius:14px;font-weight:950;font-size:18px;transform:rotate(-2deg);box-shadow:0 7px 16px #5a3a1c33}
+.map-note{position:absolute;top:72px;left:18px;background:#fff7d9;border:1px solid #f6d46a;border-radius:999px;padding:8px 12px;font-size:11px;font-weight:900;color:#74520d}
+.hill{position:absolute;border-radius:50% 50% 0 0}
+.hill.h1{width:360px;height:220px;background:#7acb69;left:-70px;bottom:0}
+.hill.h2{width:410px;height:250px;background:#66bd5a;right:-90px;bottom:0}
+.hill.h3{width:380px;height:170px;background:#8ad777;left:28%;bottom:0}
+.rainbow{position:absolute;left:7%;top:155px;width:180px;height:90px;border-radius:180px 180px 0 0;border:16px solid #f66;border-bottom:0;box-shadow:inset 0 0 0 14px #ffb84d,inset 0 0 0 28px #ffe04d,inset 0 0 0 42px #59c36a,inset 0 0 0 56px #4aa3ff}
+.castle{position:absolute;right:7%;top:110px;font-size:92px;filter:drop-shadow(0 7px 4px #40516c22)}
+.candy{position:absolute;font-size:42px;filter:drop-shadow(0 5px 4px #40516c22)}
+.candy.c1{left:16%;bottom:180px}.candy.c2{left:48%;bottom:250px}.candy.c3{right:16%;bottom:150px}.candy.c4{right:34%;top:250px}
+.path-svg{position:absolute;inset:0;width:100%;height:100%}
+.map-node{
+  position:absolute;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
+  border:5px solid #fff;box-shadow:0 5px 12px #3e4b5d33;font-weight:950;font-size:13px;
+  transform:translate(-50%,-50%);z-index:5;transition:.2s
+}
+.map-node.unlocked{background:#ffd84d;color:#624610}
+.map-node.locked{background:#d7dae2;color:#7c8190;filter:grayscale(.4)}
+.map-node.current{outline:5px solid #fff9;transform:translate(-50%,-50%) scale(1.12)}
+.map-node .mini{position:absolute;top:58px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#ffffffed;border:1px solid #e6e6ef;border-radius:10px;padding:5px 7px;font-size:10px;color:#3b3b4d;font-weight:900}
+.player{position:absolute;z-index:8;transform:translate(-50%,-75%);font-size:44px;filter:drop-shadow(0 6px 4px #2d374833);transition:left .5s ease,top .5s ease}
+.map-legend{position:absolute;left:18px;right:18px;bottom:16px;background:#ffffffdd;border:1px solid #e8e7ef;border-radius:18px;padding:11px 13px;font-size:11px;font-weight:850;color:#5f6071}
+.reward-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:12px}
+.reward-card{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:17px;padding:12px}
+.reward-ico{width:44px;height:44px;border-radius:14px;background:#fff5d6;display:grid;place-items:center;font-size:25px}
+.reward-main{flex:1}
+.reward-name{font-size:13px;font-weight:950}
+.reward-meta{font-size:10px;color:var(--muted);font-weight:800;margin-top:3px}
+
+/* PARENT */
+.locked-zone{text-align:center;padding:25px}
+.keypad{display:grid;grid-template-columns:repeat(3,70px);gap:9px;justify-content:center;margin-top:15px}
+.key{height:54px;border-radius:17px;border:1px solid var(--border);background:#fff;font-size:21px;font-weight:950}
+.pin-dots{display:flex;justify-content:center;gap:7px;margin:13px}
+.dot{width:13px;height:13px;border-radius:50%;background:#ddd}.dot.on{background:var(--purple)}
+.parent-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input,select{border:1px solid var(--border);border-radius:12px;padding:10px 11px;background:#fff;min-width:0}
+input[type=text]{flex:1}
+input[type=number]{width:85px}
+select{min-width:120px}
+.btn{border:0;border-radius:12px;padding:10px 12px;font-weight:900}
+.btn.primary{background:var(--purple);color:#fff}.btn.soft{background:#eee8ff;color:#5b21b6}.btn.danger{background:#fee2e2;color:#991b1b}
+.editrow{display:grid;grid-template-columns:1fr 72px auto;gap:7px;margin:7px 0}
+.kids-admin{display:grid;gap:9px}
+.kid-admin-card{display:flex;align-items:center;gap:10px;background:#faf9ff;border:1px solid var(--border);border-radius:16px;padding:10px}
+.kid-admin-card .big-avatar{font-size:31px;width:42px;text-align:center}
+.kid-admin-main{flex:1}
+.kid-admin-main strong{display:block}
+.kid-admin-main small{color:var(--muted);font-weight:700}
+.avatar-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin:9px 0}
+.avatar-choice{height:42px;border-radius:12px;border:1px solid var(--border);background:#fff;font-size:24px}
+.avatar-choice.selected{outline:3px solid var(--purple);background:#f1ebff}
+.color-grid{display:flex;gap:8px;flex-wrap:wrap;margin:9px 0}
+.color-choice{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #ddd}
+.color-choice.selected{box-shadow:0 0 0 3px #5b21b6}
+
+.bottom{position:fixed;left:0;right:0;bottom:0;background:#ffffffeb;backdrop-filter:blur(15px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom);z-index:20}
+.bottom-inner{max-width:980px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.nav{border:0;background:transparent;padding:10px 3px;color:var(--muted);font-size:10px;font-weight:850}
+.nav .ico{font-size:20px;display:block;margin-bottom:2px}
+.nav.active{color:var(--kid1)}
+.toast{position:fixed;left:50%;top:16px;transform:translate(-50%,-15px);opacity:0;pointer-events:none;background:#232238;color:#fff;border-radius:999px;padding:11px 15px;font-size:13px;font-weight:900;transition:.2s;z-index:99}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden}
+.confetti span{position:absolute;top:-15px;width:9px;height:14px;border-radius:3px;animation:fall 1.7s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(700deg);opacity:.9}}
+
+@media(max-width:720px){
+  .tasks,.parent-grid,.reward-cards{grid-template-columns:1fr}
+  .badges{grid-template-columns:repeat(2,1fr)}
+  .hero-stats{gap:7px}.stat .n{font-size:21px}.stat{padding:10px 8px}
+  .profile{min-width:185px}
+  .avatar-grid{grid-template-columns:repeat(6,1fr)}
+  .editrow{grid-template-columns:1fr 68px}.editrow button{grid-column:1/-1}
+  .map-shell{min-height:650px}
+}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<div class="confetti" id="confetti"></div>
+
+<div class="app" id="app">
+  <header class="header">
+    <div class="brand">
+      <div class="logo">⭐</div>
+      <div><div class="title">Kids Daily Stars</div><div class="subtitle">Little wins, every day</div></div>
+    </div>
+    <button class="sound-btn" id="soundBtn" aria-label="Toggle sound">🔊</button>
+  </header>
+
+  <div class="profiles-wrap" id="profiles"></div>
+
+  <section class="panel active" id="today">
+    <div class="hero">
+      <h1 id="greeting"></h1>
+      <div class="date" id="date"></div>
+      <div class="hero-stats">
+        <div class="stat"><div class="n" id="todayPoints">0</div><div class="l">TODAY ⭐</div></div>
+        <div class="stat"><div class="n" id="monthPoints">0</div><div class="l">MONTH 🏆</div></div>
+        <div class="stat"><div class="n" id="streak">0</div><div class="l">STREAK 🔥</div></div>
+      </div>
+      <div class="goal">
+        <div class="goaltext"><span>Daily goal</span><span id="goalText"></span></div>
+        <div class="track"><div class="bar" id="bar"></div></div>
+      </div>
+    </div>
+
+    <div class="encourage" id="encourage"></div>
+    <div class="section-head"><div class="section-title">Today’s adventures</div><div class="section-meta" id="taskMeta"></div></div>
+    <div class="tasks" id="tasks"></div>
+  </section>
+
+  <section class="panel" id="calendarPanel">
+    <div class="card month-total"><div class="big" id="calTotal"></div><div class="small" id="calLabel"></div></div>
+    <div class="section-head"><div class="section-title">Calendar</div><div class="section-meta">⭐ = goal reached</div></div>
+    <div class="calendar" id="calendar"></div>
+  </section>
+
+  <section class="panel" id="badgesPanel">
+    <div class="section-head"><div class="section-title">Badges</div><div class="section-meta">Collect them all!</div></div>
+    <div class="badges" id="badges"></div>
+  </section>
+
+  <section class="panel" id="rewardsPanel">
+    <div class="reward-summary card">
+      <div><strong id="mapKidName"></strong><br><span id="mapProgressText"></span></div>
+      <div style="font-size:30px" id="mapAvatar"></div>
+    </div>
+
+    <div class="map-shell" id="rewardMap">
+      <div class="cloud c1"></div><div class="cloud c2"></div>
+      <div class="map-title">The Adventure Map</div>
+      <div class="map-note">Earn points ⭐ Move forward ⭐ Unlock rewards</div>
+      <div class="rainbow"></div>
+      <div class="castle">🏰</div>
+      <div class="candy c1">🍭</div><div class="candy c2">🍬</div><div class="candy c3">🧁</div><div class="candy c4">🍓</div>
+      <div class="hill h1"></div><div class="hill h2"></div><div class="hill h3"></div>
+      <svg class="path-svg" id="pathSvg" viewBox="0 0 1000 720" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="player" id="playerMarker"></div>
+      <div class="map-legend">Start at the rainbow, travel through Sweet Treat Town and Kindness Forest, climb Bravery Mountain, and reach Dream Castle. Each reward milestone moves your child farther along the path.</div>
+    </div>
+
+    <div class="section-head"><div class="section-title">Rewards on the journey</div><div class="section-meta" id="rewardBalance"></div></div>
+    <div class="reward-cards" id="rewards"></div>
+  </section>
+
+  <section class="panel" id="parentPanel">
+    <div class="card locked-zone" id="locked">
+      <div style="font-size:50px">🔐</div><h2>Parent Zone</h2>
+      <div style="font-size:12px;color:var(--muted);font-weight:750">Enter your 4-digit PIN</div>
+      <div class="pin-dots" id="pinDots"></div>
+      <div class="keypad" id="keypad"></div>
+      <div style="font-size:10px;color:var(--muted);margin-top:11px">Default PIN: 2468</div>
+    </div>
+
+    <div id="parentContent" style="display:none">
+      <div class="parent-grid">
+        <div>
+          <div class="card">
+            <h3>Kids</h3>
+            <div class="kids-admin" id="kidsAdmin"></div>
+            <hr style="border:0;border-top:1px solid var(--border);margin:14px 0">
+            <h4 id="kidFormTitle">Add a child</h4>
+            <div class="row"><input id="kidNameInput" type="text" placeholder="Child name"></div>
+            <div style="font-size:11px;font-weight:900;color:var(--muted);margin-top:10px">Choose an icon</div>
+            <div class="avatar-grid" id="avatarGrid"></div>
+            <div style="font-size:11px;font-weight:900;color:var(--muted);margin-top:10px">Choose a color</div>
+            <div class="color-grid" id="colorGrid"></div>
+            <div class="row">
+              <button class="btn primary" id="saveKidBtn">Add child</button>
+              <button class="btn soft" id="cancelKidEdit" style="display:none">Cancel</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Tasks for <span id="parentKid"></span></h3>
+            <div id="taskEditor"></div>
+            <div class="row"><input id="newTask" type="text" placeholder="New task"><input id="newPts" type="number" min="1" value="5"><button class="btn primary" id="addTask">Add</button></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <h3>Daily goal</h3>
+            <div class="row"><input id="goalInput" type="number" min="1"><button class="btn soft" id="saveGoal">Save goal</button></div>
+          </div>
+          <div class="card">
+            <h3>Bonus points</h3>
+            <div class="row"><input id="bonus" type="number" min="1" value="5"><button class="btn soft" id="addBonus">Add bonus ⭐</button></div>
+          </div>
+          <div class="card">
+            <h3>Settings</h3>
+            <div class="row"><input id="pinInput" type="number" placeholder="New 4-digit PIN"><button class="btn soft" id="changePin">Change PIN</button></div>
+            <div class="row" style="margin-top:9px"><button class="btn soft" id="lockBtn">Lock Parent Zone</button><button class="btn danger" id="resetBtn">Reset all</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<nav class="bottom">
+  <div class="bottom-inner">
+    <button class="nav active" data-panel="today"><span class="ico">🏠</span>Today</button>
+    <button class="nav" data-panel="calendarPanel"><span class="ico">📅</span>Calendar</button>
+    <button class="nav" data-panel="badgesPanel"><span class="ico">🏅</span>Badges</button>
+    <button class="nav" data-panel="rewardsPanel"><span class="ico">🗺️</span>Rewards</button>
+    <button class="nav" data-panel="parentPanel"><span class="ico">🔒</span>Parent</button>
+  </div>
+</nav>
+
+<script>
+const KEY="kidsDailyStars_custom_v4";
+const AVATARS=["🦁","🐯","🦄","🐼","🐨","🦊","🐰","🐸","🐵","🤖","🚀","⚽","🏀","🧚","🦖","🐬"];
+const COLORS=[
+  ["#7c3aed","#ec4899"],["#2563eb","#14b8a6"],["#f97316","#facc15"],
+  ["#ec4899","#8b5cf6"],["#22c55e","#06b6d4"],["#ef4444","#f59e0b"]
+];
+const copy=o=>JSON.parse(JSON.stringify(o));
+const defaultTasks=()=>[
+  {id:"brush_"+Date.now(),name:"Brush teeth",points:2,icon:"🪥"},
+  {id:"dress_"+Date.now(),name:"Get dressed",points:2,icon:"👕"},
+  {id:"read_"+Date.now(),name:"Reading",points:5,icon:"📚"},
+  {id:"tidy_"+Date.now(),name:"Tidy up",points:5,icon:"🧸"},
+  {id:"help_"+Date.now(),name:"Help at home",points:3,icon:"🤝"}
+];
+const base={
+  activeKid:null,sound:true,pin:"2468",
+  kids:{},
+  rewards:[
+    {p:50,n:"Rainbow Bridge",i:"🌈"},
+    {p:100,n:"Sweet Treat Town",i:"🍭"},
+    {p:200,n:"Kindness Forest",i:"🌳"},
+    {p:300,n:"Bravery Mountain",i:"⛰️"},
+    {p:500,n:"Dream Castle",i:"🏰"}
+  ]
+};
+function starterState(){
+  const s=copy(base);
+  const id="kid_"+Date.now();
+  s.kids[id]={name:"My Kid",emoji:"🦁",a:"#7c3aed",b:"#ec4899",goal:20,history:{},tasks:defaultTasks()};
+  s.activeKid=id;
+  return s;
+}
+function load(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(raw)return normalize(JSON.parse(raw));
+    for(const oldKey of ["kidsDailyStars_interactive_v3","kidsDailyStars_v2","kidsDailyStars_v1"]){
+      const oldRaw=localStorage.getItem(oldKey);
+      if(!oldRaw)continue;
+      const old=JSON.parse(oldRaw),s=copy(base);
+      const oldKids=old.kids||{};
+      Object.entries(oldKids).forEach(([oid,k],idx)=>{
+        const nid="kid_"+Date.now()+"_"+idx;
+        s.kids[nid]={
+          name:k.name||oid,
+          emoji:k.emoji||(idx===0?"🦁":"🐯"),
+          a:k.a||k.accent||COLORS[idx%COLORS.length][0],
+          b:k.b||k.accent2||COLORS[idx%COLORS.length][1],
+          goal:+k.goal||+k.dailyGoal||20,
+          history:k.history||{},
+          tasks:(k.tasks||defaultTasks()).map((t,n)=>({id:t.id||("t_"+Date.now()+"_"+n),name:t.name||"Task",points:+t.points||1,icon:t.icon||"⭐"}))
+        };
+      });
+      const ids=Object.keys(s.kids);
+      if(!ids.length)return starterState();
+      s.activeKid=ids[0];
+      s.pin=String(old.pin||"2468");
+      s.sound=old.sound!==false;
+      return normalize(s)
+    }
+  }catch(e){}
+  return starterState()
+}
+function normalize(s){
+  s.pin=String(s.pin||"2468");s.sound=s.sound!==false;s.rewards=s.rewards||copy(base.rewards);s.kids=s.kids||{};
+  const ids=Object.keys(s.kids);
+  if(!ids.length)return starterState();
+  if(!s.activeKid||!s.kids[s.activeKid])s.activeKid=ids[0];
+  ids.forEach((id,idx)=>{
+    const k=s.kids[id];
+    k.name=k.name||"Kid";k.emoji=k.emoji||AVATARS[idx%AVATARS.length];
+    k.a=k.a||COLORS[idx%COLORS.length][0];k.b=k.b||COLORS[idx%COLORS.length][1];
+    k.goal=+k.goal||20;k.history=k.history||{};k.tasks=(k.tasks||defaultTasks()).map((t,n)=>({...t,id:t.id||("t_"+Date.now()+"_"+n),icon:t.icon||"⭐",points:+t.points||1}));
+  });
+  return s
+}
+let state=load(),unlocked=false,pinEntry="",audioCtx=null,editingKidId=null,selectedAvatar=AVATARS[0],selectedColor=0;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function kid(){return state.kids[state.activeKid]}
+function dkey(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function mkey(){return dkey().slice(0,7)}
+function rec(k,key=dkey()){if(!k.history[key])k.history[key]={checked:{},bonus:0};if(!k.history[key].checked)k.history[key].checked={};return k.history[key]}
+function pts(k,key){const r=k.history[key]||{checked:{},bonus:0};return (r.bonus||0)+k.tasks.reduce((s,t)=>s+(r.checked?.[t.id]?+t.points:0),0)}
+function mtotal(k){return Object.keys(k.history).filter(x=>x.startsWith(mkey())).reduce((s,x)=>s+pts(k,x),0)}
+function streak(k){let d=new Date(),n=0;for(let i=0;i<100;i++){const key=dkey(d);if(pts(k,key)>=k.goal){n++;d.setDate(d.getDate()-1)}else if(i===0)d.setDate(d.getDate()-1);else break}return n}
+
+function audio(){if(!state.sound)return null;try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}catch(e){return null}}
+function tone(freq,dur=.1,type="sine",vol=.06,delay=0){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+delay;o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+.03)}
+function soundCheck(){tone(520,.09);tone(780,.14,"sine",.06,.07)}
+function soundUndo(){tone(420,.09,"triangle",.04);tone(310,.12,"triangle",.04,.06)}
+function soundGoal(){[523,659,784,1047].forEach((f,i)=>tone(f,.22,"sine",.065,i*.09))}
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),1300)}
+function confetti(){const c=$("confetti"),cols=["#7c3aed","#ec4899","#3b82f6","#22c55e","#f59e0b"];for(let i=0;i<42;i++){const s=document.createElement("span");s.style.left=Math.random()*100+"%";s.style.background=cols[i%cols.length];s.style.animationDelay=Math.random()*.35+"s";c.appendChild(s);setTimeout(()=>s.remove(),2100)}}
+function starsOn(el){for(let i=0;i<4;i++){const s=document.createElement("span");s.className="star-float";s.textContent=i%2?"✨":"⭐";s.style.left=(50+Math.random()*35-17)+"%";s.style.top=(42+Math.random()*20-10)+"%";s.style.animationDelay=(i*.05)+"s";el.appendChild(s);setTimeout(()=>s.remove(),950)}}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function attr(s){return safe(s)}
+function encouragement(p,g){if(p===0)return"Pick your first adventure! 🌟";if(p<g*.4)return"Great start — keep going! 💪";if(p<g*.75)return"You’re getting closer! 🚀";if(p<g)return"Almost there! One more push! ⭐";return"Goal complete — superstar mode! 🏆"}
+
+function theme(){const k=kid();document.documentElement.style.setProperty("--kid1",k.a);document.documentElement.style.setProperty("--kid2",k.b)}
+function render(){
+  theme();const k=kid(),p=pts(k,dkey()),total=mtotal(k),s=streak(k),now=new Date(),h=now.getHours();
+  $("greeting").textContent=`${h<12?"Good morning":h<18?"Good afternoon":"Good evening"}, ${k.name}!`;
+  $("date").textContent=now.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});
+  $("todayPoints").textContent=p;$("monthPoints").textContent=total;$("streak").textContent=s;
+  $("goalText").textContent=`${p} / ${k.goal} points`;$("bar").style.width=Math.min(100,p/k.goal*100)+"%";
+  $("encourage").textContent=encouragement(p,k.goal);$("soundBtn").textContent=state.sound?"🔊":"🔇";
+  renderProfiles();renderTasks();renderCalendar();renderBadges();renderRewards();renderParent();save()
+}
+function renderProfiles(){
+  const box=$("profiles");box.innerHTML="";
+  Object.entries(state.kids).forEach(([id,k])=>{
+    const b=document.createElement("button");b.className="profile"+(state.activeKid===id?" active":"");b.style.setProperty("--accent",k.a);
+    b.innerHTML=`<div class="avatar">${k.emoji}</div><div><div class="pname">${safe(k.name)}</div><div class="pscore">${mtotal(k)} points this month ⭐</div></div>`;
+    b.addEventListener("click",()=>{state.activeKid=id;soundCheck();render()});box.appendChild(b)
+  })
+}
+function renderTasks(){
+  const k=kid(),r=rec(k),box=$("tasks");box.innerHTML="";let done=0;
+  k.tasks.forEach(t=>{
+    const yes=!!r.checked[t.id];if(yes)done++;
+    const b=document.createElement("button");b.className="task"+(yes?" done":"");
+    b.innerHTML=`<div class="task-icon">${t.icon}</div><div class="task-main"><div class="task-name">${safe(t.name)}</div><div class="task-points">+${t.points} points</div></div><div class="check">${yes?"✓":""}</div>`;
+    b.addEventListener("click",()=>{
+      const before=pts(k,dkey())>=k.goal;r.checked[t.id]=!yes;
+      if(!yes){soundCheck();starsOn(b);toast(`+${t.points} ⭐ Great job!`)}else{soundUndo();toast("Task unchecked")}
+      const after=pts(k,dkey())>=k.goal;if(after&&!before){setTimeout(()=>{soundGoal();confetti()},150)}
+      render()
+    });
+    box.appendChild(b)
+  });
+  $("taskMeta").textContent=`${done}/${k.tasks.length} done`
+}
+function renderCalendar(){
+  const now=new Date(),k=kid(),y=now.getFullYear(),m=now.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),box=$("calendar");box.innerHTML="";
+  ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(x=>{let e=document.createElement("div");e.className="dow";e.textContent=x;box.appendChild(e)});
+  for(let i=0;i<first.getDay();i++)box.appendChild(document.createElement("div"));
+  for(let d=1;d<=last.getDate();d++){const dt=new Date(y,m,d),key=dkey(dt),p=pts(k,key),e=document.createElement("div");e.className="day"+(key===dkey()?" today":"");e.innerHTML=`<div class="num">${d}</div><div class="pts">${p?p+" pts":"—"}</div><div class="star">${p>=k.goal?"⭐":""}</div>`;box.appendChild(e)}
+  $("calTotal").textContent=mtotal(k)+" ⭐";$("calLabel").textContent=`${k.name}'s ${now.toLocaleDateString(undefined,{month:"long"})} total`
+}
+function renderBadges(){
+  const k=kid(),t=mtotal(k),s=streak(k),days=Object.keys(k.history).filter(x=>pts(k,x)>0).length;
+  const data=[["🌟","First Star","Earn points on one day",days>=1],["🔥","3-Day Streak","Reach goal 3 days",s>=3],["🚀","7-Day Streak","Reach goal 7 days",s>=7],["💯","Century Club","100 points this month",t>=100],["🏆","Super Star","300 points this month",t>=300],["👑","Legend","500 points this month",t>=500]];
+  const box=$("badges");box.innerHTML="";
+  data.forEach(x=>{let e=document.createElement("div");e.className="badge"+(x[3]?"":" locked");e.innerHTML=`<div class="ico">${x[3]?x[0]:"🔒"}</div><div class="name">${x[1]}</div><div class="desc">${x[2]}</div>`;box.appendChild(e)})
+}
+
+/* Candy Land reward map */
+const NODE_POS=[
+  {x:12,y:78,label:"Start"},
+  {x:23,y:70,label:"Rainbow Bridge"},
+  {x:36,y:61,label:"Sweet Treat Town"},
+  {x:49,y:53,label:"Kindness Forest"},
+  {x:63,y:44,label:"Bravery Mountain"},
+  {x:78,y:35,label:"Dream Castle"}
+];
+function renderRewards(){
+  const k=kid(),total=mtotal(k),box=$("rewards");box.innerHTML="";
+  $("mapKidName").textContent=`${k.name}'s Adventure`;
+  $("mapAvatar").textContent=k.emoji;
+  $("rewardBalance").textContent=`${total} ⭐ earned`;
+
+  const rewards=state.rewards.slice().sort((a,b)=>a.p-b.p);
+  const maxReward=rewards.length?rewards[rewards.length-1].p:500;
+  const progress=Math.min(1,total/maxReward);
+  $("mapProgressText").textContent=`${total} points • ${Math.round(progress*100)}% of the journey`;
+
+  const svg=$("pathSvg");svg.innerHTML="";
+  const ptsArr=NODE_POS.map(n=>`${n.x*10},${n.y*7.2}`).join(" ");
+  svg.innerHTML=`<polyline points="${ptsArr}" fill="none" stroke="#ffffffcc" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/><polyline points="${ptsArr}" fill="none" stroke="#f7b34a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16 16"/>`;
+
+  document.querySelectorAll(".map-node").forEach(n=>n.remove());
+  const shell=$("rewardMap");
+  NODE_POS.forEach((n,i)=>{
+    const threshold=i===0?0:(rewards[i-1]?.p ?? maxReward);
+    const unlocked=total>=threshold;
+    const node=document.createElement("div");node.className="map-node "+(unlocked?"unlocked":"locked");
+    node.style.left=n.x+"%";node.style.top=n.y+"%";
+    node.innerHTML=`${i===0?"🚩":unlocked?"⭐":"🔒"}<div class="mini">${n.label}${i===0?"":` • ${threshold}`}</div>`;
+    shell.appendChild(node)
+  });
+
+  let stage=0;
+  rewards.forEach((r,i)=>{if(total>=r.p)stage=i+1});
+  stage=Math.min(stage,NODE_POS.length-1);
+  document.querySelectorAll(".map-node")[stage]?.classList.add("current");
+  const pos=NODE_POS[stage];
+  $("playerMarker").style.left=pos.x+"%";$("playerMarker").style.top=pos.y+"%";$("playerMarker").textContent=k.emoji;
+
+  rewards.forEach(r=>{
+    const u=total>=r.p,e=document.createElement("div");e.className="reward-card";
+    e.innerHTML=`<div class="reward-ico">${r.i}</div><div class="reward-main"><div class="reward-name">${safe(r.n)}</div><div class="reward-meta">${r.p} points • ${u?"Unlocked!":"Need "+(r.p-total)+" more"}</div></div><div>${u?"✅":"🔒"}</div>`;
+    box.appendChild(e)
+  })
+}
+
+function renderParent(){
+  $("locked").style.display=unlocked?"none":"block";$("parentContent").style.display=unlocked?"block":"none";
+  renderPin();if(!unlocked)return;
+  $("parentKid").textContent=kid().name;$("goalInput").value=kid().goal;
+  renderKidsAdmin();renderKidForm();renderTaskEditor()
+}
+function renderPin(){
+  const dots=$("pinDots");dots.innerHTML="";for(let i=0;i<4;i++){const d=document.createElement("div");d.className="dot"+(i<pinEntry.length?" on":"");dots.appendChild(d)}
+  const pad=$("keypad");pad.innerHTML="";
+  ["1","2","3","4","5","6","7","8","9","⌫","0","✓"].forEach(x=>{const b=document.createElement("button");b.className="key";b.textContent=x;b.addEventListener("click",()=>pinKey(x));pad.appendChild(b)})
+}
+function pinKey(x){
+  if(x==="⌫"){pinEntry=pinEntry.slice(0,-1);soundUndo()}
+  else if(x==="✓"){if(pinEntry===state.pin){unlocked=true;pinEntry="";soundGoal();toast("Parent Zone unlocked 🔓")}else{pinEntry="";soundUndo();toast("Incorrect PIN")}}
+  else if(pinEntry.length<4){pinEntry+=x;tone(480,.06,"sine",.025)}
+  renderParent()
+}
+function renderKidsAdmin(){
+  const box=$("kidsAdmin");box.innerHTML="";
+  Object.entries(state.kids).forEach(([id,k])=>{
+    const e=document.createElement("div");e.className="kid-admin-card";
+    e.innerHTML=`<div class="big-avatar">${k.emoji}</div><div class="kid-admin-main"><strong>${safe(k.name)}</strong><small>${mtotal(k)} points this month</small></div><button class="btn soft editKid">Edit</button><button class="btn danger deleteKid">Delete</button>`;
+    e.querySelector(".editKid").addEventListener("click",()=>startEditKid(id));
+    e.querySelector(".deleteKid").addEventListener("click",()=>deleteKid(id));
+    box.appendChild(e)
+  })
+}
+function renderKidForm(){
+  $("kidFormTitle").textContent=editingKidId?"Edit child":"Add a child";
+  $("saveKidBtn").textContent=editingKidId?"Save changes":"Add child";
+  $("cancelKidEdit").style.display=editingKidId?"inline-block":"none";
+
+  if(editingKidId){
+    const k=state.kids[editingKidId];
+    $("kidNameInput").value=k.name;selectedAvatar=k.emoji;
+    selectedColor=Math.max(0,COLORS.findIndex(c=>c[0]===k.a&&c[1]===k.b));
+  } else if(!$("kidNameInput").value){
+    selectedAvatar=selectedAvatar||AVATARS[0];
+  }
+
+  const ag=$("avatarGrid");ag.innerHTML="";
+  AVATARS.forEach(a=>{
+    const b=document.createElement("button");b.className="avatar-choice"+(a===selectedAvatar?" selected":"");b.textContent=a;
+    b.addEventListener("click",()=>{selectedAvatar=a;renderKidForm()});ag.appendChild(b)
+  });
+  const cg=$("colorGrid");cg.innerHTML="";
+  COLORS.forEach((c,i)=>{
+    const b=document.createElement("button");b.className="color-choice"+(i===selectedColor?" selected":"");b.style.background=`linear-gradient(135deg,${c[0]},${c[1]})`;
+    b.addEventListener("click",()=>{selectedColor=i;renderKidForm()});cg.appendChild(b)
+  })
+}
+function resetKidForm(){
+  editingKidId=null;$("kidNameInput").value="";selectedAvatar=AVATARS[0];selectedColor=0;renderParent()
+}
+function startEditKid(id){
+  editingKidId=id;const k=state.kids[id];$("kidNameInput").value=k.name;selectedAvatar=k.emoji;selectedColor=Math.max(0,COLORS.findIndex(c=>c[0]===k.a&&c[1]===k.b));renderParent()
+}
+function saveKid(){
+  const name=$("kidNameInput").value.trim();if(!name){toast("Enter a child name");return}
+  const color=COLORS[selectedColor]||COLORS[0];
+  if(editingKidId){
+    const k=state.kids[editingKidId];k.name=name;k.emoji=selectedAvatar;k.a=color[0];k.b=color[1];
+    state.activeKid=editingKidId;toast("Child updated ✨")
+  }else{
+    const id="kid_"+Date.now();state.kids[id]={name,emoji:selectedAvatar,a:color[0],b:color[1],goal:20,history:{},tasks:defaultTasks()};state.activeKid=id;toast("Child added 🎉")
+  }
+  resetKidForm();render()
+}
+function deleteKid(id){
+  const ids=Object.keys(state.kids);if(ids.length===1){toast("Keep at least one child");return}
+  if(!confirm(`Delete ${state.kids[id].name} and all of their points?`))return;
+  delete state.kids[id];if(state.activeKid===id)state.activeKid=Object.keys(state.kids)[0];if(editingKidId===id)editingKidId=null;render()
+}
+function renderTaskEditor(){
+  const k=kid(),box=$("taskEditor");box.innerHTML="";
+  k.tasks.forEach((t,i)=>{
+    const e=document.createElement("div");e.className="editrow";e.innerHTML=`<input type="text" value="${attr(t.name)}"><input type="number" min="1" value="${t.points}"><button class="btn danger">Delete</button>`;
+    const ins=e.querySelectorAll("input");ins[0].addEventListener("change",ev=>{t.name=ev.target.value.trim()||t.name;render()});ins[1].addEventListener("change",ev=>{t.points=Math.max(1,+ev.target.value||1);render()});e.querySelector("button").addEventListener("click",()=>{k.tasks.splice(i,1);render()});box.appendChild(e)
+  })
+}
+
+$("soundBtn").addEventListener("click",()=>{state.sound=!state.sound;if(state.sound){soundCheck();toast("Sounds on 🔊")}else toast("Sounds off 🔇");render()});
+$("saveKidBtn").addEventListener("click",saveKid);
+$("cancelKidEdit").addEventListener("click",resetKidForm);
+$("addTask").addEventListener("click",()=>{const n=$("newTask").value.trim(),p=Math.max(1,+$("newPts").value||1);if(!n)return;kid().tasks.push({id:"t_"+Date.now(),name:n,points:p,icon:"⭐"});$("newTask").value="";soundCheck();render()});
+$("saveGoal").addEventListener("click",()=>{kid().goal=Math.max(1,+$("goalInput").value||1);soundCheck();toast("Daily goal updated");render()});
+$("addBonus").addEventListener("click",()=>{const p=Math.max(1,+$("bonus").value||1),r=rec(kid()),before=pts(kid(),dkey())>=kid().goal;r.bonus=(r.bonus||0)+p;soundCheck();toast(`+${p} bonus ⭐`);if(pts(kid(),dkey())>=kid().goal&&!before){setTimeout(()=>{soundGoal();confetti()},150)}render()});
+$("changePin").addEventListener("click",()=>{const p=String($("pinInput").value).trim();if(!/^\d{4}$/.test(p)){toast("PIN must be 4 digits");return}state.pin=p;$("pinInput").value="";toast("PIN changed 🔐");render()});
+$("lockBtn").addEventListener("click",()=>{unlocked=false;pinEntry="";render()});
+$("resetBtn").addEventListener("click",()=>{if(confirm("Reset all kids, tasks and points?")){localStorage.removeItem(KEY);state=starterState();unlocked=false;pinEntry="";editingKidId=null;render()}});
+document.querySelectorAll(".nav").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$(b.dataset.panel).classList.add("active");
+  tone(440,.055,"sine",.022);render()
+}));
+
+render();
+</script>
+</body>
+</html>
