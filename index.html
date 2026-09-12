@@ -1,0 +1,1692 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#7c3aed">
+<title>Kids Daily Stars</title>
+<style>
+:root{
+  --bg:#f7f8fd;--card:#fff;--text:#22223b;--muted:#77778c;--border:#e9e7f1;
+  --purple:#7c3aed;--pink:#ec4899;--blue:#3b82f6;--green:#22c55e;--gold:#f59e0b;
+  --kid1:#7c3aed;--kid2:#ec4899;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text)}
+body{
+  --pageA:#fdebf5; --pageB:#e9f4ff; --pageC:#faf8ff; --pageD:#f5fbff;
+  --mapSky:#bfe8ff; --mapLand:#d9f7cf; --mapPath:#f7b34a; --softIcon:#f7f4ff;
+  background:
+    radial-gradient(circle at 10% 0,var(--pageA) 0,transparent 28%),
+    radial-gradient(circle at 100% 0,var(--pageB) 0,transparent 32%),
+    linear-gradient(180deg,var(--pageC),var(--pageD));
+  transition:background .35s ease;
+}
+body[data-theme="ocean"]{--pageA:#d9f6ff;--pageB:#dcecff;--pageC:#effbff;--pageD:#eef5ff;--mapSky:#8ddcff;--mapLand:#bbefdd;--mapPath:#26b6d4;--softIcon:#e7faff}
+body[data-theme="space"]{--pageA:#25234c;--pageB:#38245f;--pageC:#17162d;--pageD:#26213e;--mapSky:#2f2c65;--mapLand:#514071;--mapPath:#ffd25a;--softIcon:#312b59}
+body[data-theme="forest"]{--pageA:#e2f7dc;--pageB:#dff4ee;--pageC:#f3fbef;--pageD:#eef8f3;--mapSky:#bce9df;--mapLand:#9fda82;--mapPath:#f2b94b;--softIcon:#eef8e9}
+body[data-theme="sunset"]{--pageA:#ffe3d5;--pageB:#ffe1ed;--pageC:#fff4ec;--pageD:#fff0f4;--mapSky:#ffc7b1;--mapLand:#f2d98d;--mapPath:#ef7c54;--softIcon:#fff0e6}
+body[data-theme="rainbow"]{--pageA:#ffe5f1;--pageB:#e1f2ff;--pageC:#fff9e9;--pageD:#ecfff1;--mapSky:#bfe7ff;--mapLand:#c9f0b6;--mapPath:#e987c9;--softIcon:#fff1fb}
+body[data-theme="space"] .card,
+body[data-theme="space"] .task,
+body[data-theme="space"] .profile,
+body[data-theme="space"] .reward-card,
+body[data-theme="space"] .kid-admin-card{background:#26233feF;color:#f6f2ff;border-color:#474066}
+body[data-theme="space"] .subtitle,
+body[data-theme="space"] .section-meta,
+body[data-theme="space"] .task-points,
+body[data-theme="space"] .pscore,
+body[data-theme="space"] .reward-meta,
+body[data-theme="space"] .month-total .small{color:#c3bdd7}
+body[data-theme="space"] .task-icon{background:#37315c}
+
+button,input,select{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.app{max-width:980px;margin:auto;padding:18px 16px 105px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#7c3aed,#ec4899);display:grid;place-items:center;color:#fff;font-size:24px;box-shadow:0 8px 20px #7c3aed33}
+.title{font-size:24px;font-weight:950;letter-spacing:-.4px}
+.subtitle{font-size:11px;color:var(--muted);font-weight:800}
+.sound-btn{border:1px solid var(--border);background:#fff;width:46px;height:46px;border-radius:15px;font-size:20px}
+
+.profiles-wrap{display:flex;gap:10px;overflow:auto;padding-bottom:3px;margin-bottom:14px}
+.profile{
+  min-width:220px;border:2px solid transparent;border-radius:22px;background:#ffffffdd;padding:12px;
+  display:flex;align-items:center;gap:10px;text-align:left;box-shadow:0 8px 22px #3d315315;transition:.18s
+}
+.profile.active{border-color:var(--accent)}
+.profile:active{transform:scale(.98)}
+.avatar{width:56px;height:56px;border-radius:18px;background:#f7f3ff;display:grid;place-items:center;font-size:34px;flex:none}
+.pname{font-size:18px;font-weight:950}
+.pscore{font-size:11px;color:var(--muted);font-weight:800;margin-top:2px}
+
+.hero{position:relative;overflow:hidden;border-radius:28px;padding:22px;color:#fff;background:linear-gradient(135deg,var(--kid1),var(--kid2));box-shadow:0 14px 34px color-mix(in srgb,var(--kid1) 28%,transparent)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:#fff1}
+.hero:before{width:170px;height:170px;right:-55px;top:-75px}
+.hero:after{width:110px;height:110px;right:40px;bottom:-65px}
+.hero h1{position:relative;margin:0;font-size:30px;z-index:2}
+.date{position:relative;z-index:2;font-size:13px;font-weight:700;opacity:.9;margin-top:4px}
+.hero-stats{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}
+.stat{background:#ffffff1f;border:1px solid #ffffff32;border-radius:17px;padding:11px;backdrop-filter:blur(8px)}
+.stat .n{font-size:24px;font-weight:950}
+.stat .l{font-size:10px;font-weight:900;opacity:.9;margin-top:2px}
+.goal{position:relative;z-index:2;margin-top:15px}
+.goaltext{display:flex;justify-content:space-between;font-size:11px;font-weight:900;margin-bottom:6px}
+.track{height:13px;border-radius:999px;background:#ffffff30;overflow:hidden}
+.bar{height:100%;border-radius:999px;background:#fff;width:0;transition:width .4s ease}
+
+.encourage{text-align:center;margin:14px 0 4px;font-size:14px;font-weight:900;color:#5f5c72}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:18px 2px 9px}
+.section-title{font-size:20px;font-weight:950}
+.section-meta{font-size:11px;color:var(--muted);font-weight:800}
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.task{position:relative;overflow:hidden;border:1px solid var(--border);background:#ffffffed;border-radius:20px;padding:14px;display:flex;align-items:center;gap:11px;text-align:left;box-shadow:0 7px 20px #2e29430e;transition:.18s}
+.task:active{transform:scale(.975)}
+.task.done{opacity:.68}
+.task.done .task-name{text-decoration:line-through}
+.task-icon{width:43px;height:43px;border-radius:14px;background:var(--softIcon);display:grid;place-items:center;font-size:24px;flex:none}
+.task-main{flex:1;min-width:0}
+.task-name{font-size:15px;font-weight:900}
+.task-points{font-size:11px;color:var(--muted);font-weight:800;margin-top:4px}
+.check{width:34px;height:34px;border-radius:12px;border:2px solid var(--kid1);display:grid;place-items:center;flex:none;background:#fff;color:#fff;font-size:20px;font-weight:950}
+.task.done .check{background:var(--kid1)}
+.star-float{position:absolute;font-size:22px;pointer-events:none;animation:starFloat .85s ease-out forwards;z-index:4}
+@keyframes starFloat{0%{opacity:0;transform:translateY(8px) scale(.4)}25%{opacity:1}100%{opacity:0;transform:translateY(-55px) scale(1.25) rotate(20deg)}}
+.task-confetti-piece{
+  position:fixed;width:8px;height:12px;border-radius:3px;pointer-events:none;z-index:120;
+  animation:taskBurst .85s cubic-bezier(.18,.8,.3,1) forwards;
+}
+@keyframes taskBurst{
+  0%{opacity:1;transform:translate(0,0) rotate(0deg) scale(.8)}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(1.05)}
+}
+
+.panel{display:none}.panel.active{display:block}
+.card{background:#ffffffec;border:1px solid var(--border);border-radius:22px;padding:17px;box-shadow:0 8px 22px #2e29430e;margin-bottom:12px}
+.month-total{text-align:center}
+.month-total .big{font-size:50px;font-weight:950;background:linear-gradient(135deg,var(--kid1),var(--kid2));-webkit-background-clip:text;color:transparent}
+.month-total .small{font-size:12px;color:var(--muted);font-weight:850}
+.calendar-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
+.cal-nav{width:42px;height:42px;border-radius:13px;border:1px solid var(--border);background:#fff;font-size:20px;font-weight:950;cursor:pointer}
+.cal-month-title{font-size:17px;font-weight:950;text-align:center}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dow{text-align:center;font-size:10px;color:var(--muted);font-weight:900}
+.day{background:#fff;border:1px solid var(--border);border-radius:13px;min-height:68px;padding:7px 3px;text-align:center;cursor:pointer;transition:.16s}
+.day.today{border:2px solid var(--kid1)}
+.day.selected{outline:3px solid rgba(124,58,237,.16);border-color:var(--kid1)}
+.day.future{opacity:.72}
+.day .num{font-weight:900}
+.day .pts{font-size:10px;color:var(--muted);font-weight:800;margin-top:5px}
+.day .star{font-size:14px;margin-top:2px}
+.calendar-detail{margin-top:12px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:15px;box-shadow:0 8px 22px rgba(46,41,67,.06)}
+.calendar-detail-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.calendar-detail-date{font-size:17px;font-weight:950}
+.calendar-detail-points{font-size:28px;font-weight:950;color:var(--kid1);white-space:nowrap}
+.calendar-detail-sub{font-size:11px;color:var(--muted);font-weight:800;margin-top:3px}
+.calendar-task-list{display:grid;gap:7px;margin-top:12px}
+.calendar-task-item{display:flex;align-items:center;gap:9px;background:#faf9ff;border:1px solid var(--border);border-radius:13px;padding:9px 10px}
+.calendar-task-item .status{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:#eee;color:#777;flex:none}
+.calendar-task-item.done .status{background:#dcfce7;color:#15803d}
+.calendar-task-item .name{flex:1;font-size:12px;font-weight:900}
+.calendar-task-item .pts{font-size:11px;color:var(--muted);font-weight:850}
+.calendar-empty{margin-top:11px;padding:12px;border-radius:13px;background:#f7f7fb;color:var(--muted);font-size:12px;font-weight:800;text-align:center}
+
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.badge{background:#fff;border:1px solid var(--border);border-radius:18px;padding:14px;text-align:center}
+.badge.locked{opacity:.45;filter:grayscale(1)}
+.badge .ico{font-size:34px}
+.badge .name{font-size:12px;font-weight:950;margin-top:6px}
+.badge .desc{font-size:9px;color:var(--muted);font-weight:750;margin-top:3px}
+
+/* REWARDS MAP */
+.reward-summary{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.reward-summary strong{font-size:19px}
+.reward-summary span{font-size:12px;color:var(--muted);font-weight:800}
+.map-shell{
+  position:relative;overflow:hidden;border-radius:28px;border:1px solid #dfe8f2;
+  background:linear-gradient(var(--mapSky) 0 35%,var(--mapLand) 35% 100%);
+  min-height:720px;box-shadow:0 12px 30px #41516f14
+}
+.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.85}
+.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud.c1{width:95px;height:28px;top:36px;left:7%}.cloud.c1:before{width:42px;height:42px;left:15px;top:-19px}.cloud.c1:after{width:35px;height:35px;right:15px;top:-14px}
+.cloud.c2{width:110px;height:30px;top:70px;right:8%}.cloud.c2:before{width:48px;height:48px;left:18px;top:-21px}.cloud.c2:after{width:38px;height:38px;right:16px;top:-15px}
+.map-title{position:absolute;left:18px;top:18px;background:#8b5a2b;color:#fff;padding:11px 17px;border-radius:14px;font-weight:950;font-size:18px;transform:rotate(-2deg);box-shadow:0 7px 16px #5a3a1c33}
+.map-note{position:absolute;top:72px;left:18px;background:#fff7d9;border:1px solid #f6d46a;border-radius:999px;padding:8px 12px;font-size:11px;font-weight:900;color:#74520d}
+.hill{position:absolute;border-radius:50% 50% 0 0}
+.hill.h1{width:360px;height:220px;background:#7acb69;left:-70px;bottom:0}
+.hill.h2{width:410px;height:250px;background:#66bd5a;right:-90px;bottom:0}
+.hill.h3{width:380px;height:170px;background:#8ad777;left:28%;bottom:0}
+.rainbow{position:absolute;left:7%;top:155px;width:180px;height:90px;border-radius:180px 180px 0 0;border:16px solid #f66;border-bottom:0;box-shadow:inset 0 0 0 14px #ffb84d,inset 0 0 0 28px #ffe04d,inset 0 0 0 42px #59c36a,inset 0 0 0 56px #4aa3ff}
+.castle{position:absolute;right:7%;top:110px;font-size:92px;filter:drop-shadow(0 7px 4px #40516c22)}
+.candy{position:absolute;font-size:42px;filter:drop-shadow(0 5px 4px #40516c22)}
+.candy.c1{left:16%;bottom:180px}.candy.c2{left:48%;bottom:250px}.candy.c3{right:16%;bottom:150px}.candy.c4{right:34%;top:250px}
+.path-svg{position:absolute;inset:0;width:100%;height:100%}
+.map-node{
+  position:absolute;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
+  border:5px solid #fff;box-shadow:0 5px 12px #3e4b5d33;font-weight:950;font-size:13px;
+  transform:translate(-50%,-50%);z-index:5;transition:.2s
+}
+.map-node.unlocked{background:#ffd84d;color:#624610}
+.map-node.locked{background:#d7dae2;color:#7c8190;filter:grayscale(.4)}
+.map-node.current{outline:5px solid #fff9;transform:translate(-50%,-50%) scale(1.12)}
+.map-node{cursor:pointer}
+.map-node:hover{filter:brightness(1.04)}
+.map-label{
+  position:absolute;z-index:7;transform:translate(-50%,-50%);width:max-content;max-width:165px;
+  background:#fffffff5;border:1px solid #e6e6ef;border-radius:12px;padding:7px 10px;
+  font-size:10.5px;color:#3b3b4d;font-weight:950;text-align:center;line-height:1.12;
+  box-shadow:0 5px 14px #3e4b5d20;pointer-events:none;
+}
+.map-label.left{text-align:right}
+.map-label.right{text-align:left}
+.map-label.center{text-align:center}
+@media(max-width:520px){
+  .map-label{max-width:128px;font-size:9.5px;padding:6px 8px}
+}
+.player{position:absolute;z-index:8;transform:translate(-50%,-75%);font-size:44px;filter:drop-shadow(0 6px 4px #2d374833);transition:left .5s ease,top .5s ease;cursor:pointer}
+.player.bounce{animation:playerBounce .5s ease}
+@keyframes playerBounce{0%,100%{transform:translate(-50%,-75%) scale(1)}45%{transform:translate(-50%,-95%) scale(1.18)}}
+.map-detail{
+  margin-top:10px;background:#fff;border:1px solid var(--border);border-radius:18px;padding:12px 14px;
+  display:flex;gap:10px;align-items:center;min-height:62px
+}
+.map-detail .detail-icon{font-size:30px}
+.map-detail strong{font-size:14px}
+.map-detail small{display:block;color:var(--muted);font-weight:800;margin-top:2px}
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
+.theme-choice{border:2px solid transparent;border-radius:14px;padding:10px 7px;background:#fff;font-size:12px;font-weight:900}
+.theme-choice.selected{border-color:var(--purple);box-shadow:0 0 0 3px #7c3aed18}
+.theme-swatch{height:22px;border-radius:8px;margin-bottom:6px}
+.reward-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:12px}
+.reward-card{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:17px;padding:12px}
+.reward-ico{width:44px;height:44px;border-radius:14px;background:#fff5d6;display:grid;place-items:center;font-size:25px}
+.reward-main{flex:1}
+.reward-name{font-size:13px;font-weight:950}
+.reward-meta{font-size:10px;color:var(--muted);font-weight:800;margin-top:3px}
+
+/* PARENT */
+.locked-zone{text-align:center;padding:25px}
+.keypad{display:grid;grid-template-columns:repeat(3,70px);gap:9px;justify-content:center;margin-top:15px}
+.key{height:54px;border-radius:17px;border:1px solid var(--border);background:#fff;font-size:21px;font-weight:950}
+.pin-dots{display:flex;justify-content:center;gap:7px;margin:13px}
+.dot{width:13px;height:13px;border-radius:50%;background:#ddd}.dot.on{background:var(--purple)}
+.parent-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input,select{border:1px solid var(--border);border-radius:12px;padding:10px 11px;background:#fff;min-width:0}
+input[type=text]{flex:1}
+input[type=number]{width:85px}
+select{min-width:120px}
+.btn{border:0;border-radius:12px;padding:10px 12px;font-weight:900}
+.btn.primary{background:var(--purple);color:#fff}.btn.soft{background:#eee8ff;color:#5b21b6}.btn.danger{background:#fee2e2;color:#991b1b}
+.editrow{display:grid;grid-template-columns:1fr 72px auto;gap:7px;margin:7px 0}
+.kids-admin{display:grid;gap:9px}
+.kid-admin-card{display:flex;align-items:center;gap:10px;background:#faf9ff;border:1px solid var(--border);border-radius:16px;padding:10px}
+.kid-admin-card .big-avatar{font-size:31px;width:42px;text-align:center}
+.kid-admin-main{flex:1}
+.kid-admin-main strong{display:block}
+.kid-admin-main small{color:var(--muted);font-weight:700}
+.avatar-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin:9px 0}
+.avatar-choice{height:42px;border-radius:12px;border:1px solid var(--border);background:#fff;font-size:24px}
+.avatar-choice.selected{outline:3px solid var(--purple);background:#f1ebff}
+.color-grid{display:flex;gap:8px;flex-wrap:wrap;margin:9px 0}
+.color-choice{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #ddd}
+.color-choice.selected{box-shadow:0 0 0 3px #5b21b6}
+
+.bottom{position:fixed;left:0;right:0;bottom:0;background:#ffffffeb;backdrop-filter:blur(15px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom);z-index:20}
+.bottom-inner{max-width:980px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.nav{border:0;background:transparent;padding:10px 3px;color:var(--muted);font-size:10px;font-weight:850}
+.nav .ico{font-size:20px;display:block;margin-bottom:2px}
+.nav.active{color:var(--kid1)}
+.toast{position:fixed;left:50%;top:16px;transform:translate(-50%,-15px);opacity:0;pointer-events:none;background:#232238;color:#fff;border-radius:999px;padding:11px 15px;font-size:13px;font-weight:900;transition:.2s;z-index:99}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden}
+.confetti span{position:absolute;top:-15px;width:9px;height:14px;border-radius:3px;animation:fall 1.7s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(700deg);opacity:.9}}
+
+@media(max-width:720px){
+  .header{align-items:flex-start}
+  .sound-btn{width:43px;height:43px}
+
+  .tasks,.parent-grid,.reward-cards{grid-template-columns:1fr}
+  .badges{grid-template-columns:repeat(2,1fr)}
+  .hero-stats{gap:7px}.stat .n{font-size:21px}.stat{padding:10px 8px}
+  .profile{min-width:185px}
+  .avatar-grid{grid-template-columns:repeat(6,1fr)}
+  .editrow{grid-template-columns:1fr 68px}.editrow button{grid-column:1/-1}
+  .map-shell{min-height:650px}
+}
+
+.custom-editor-list{display:grid;gap:9px;margin-top:10px}
+.custom-editor-row{
+  display:grid;grid-template-columns:42px minmax(120px,1fr) 100px;gap:8px;align-items:center;
+  background:#faf9ff;border:1px solid var(--border);border-radius:14px;padding:9px
+}
+.custom-editor-row .editor-icon{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#fff;
+  border:1px solid var(--border);font-size:21px
+}
+.custom-editor-row input{min-width:0;width:100%}
+.custom-editor-row .requirement-wrap{display:grid;gap:3px}
+.custom-editor-row .requirement-wrap small{font-size:8px;color:var(--muted);font-weight:900;text-align:center}
+.custom-note{font-size:10px;color:var(--muted);font-weight:800;line-height:1.4;margin-top:4px}
+.custom-section-title{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.custom-section-title strong{font-size:11px;color:var(--purple)}
+@media(max-width:520px){
+  .custom-editor-row{grid-template-columns:38px minmax(100px,1fr) 82px;gap:6px;padding:8px}
+  .custom-editor-row input{font-size:12px;padding-left:8px;padding-right:8px}
+}
+
+
+/* v10: Pet, Shop, collectibles and adventure interactions */
+.bottom-inner{grid-template-columns:repeat(7,1fr)}
+.nav{font-size:9px;padding:8px 2px}.nav .ico{font-size:19px}
+.wallet-pill{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);border-radius:999px;padding:7px 11px;font-size:11px;font-weight:950;box-shadow:0 5px 15px rgba(46,41,67,.06)}
+.shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.shop-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:14px;box-shadow:0 8px 22px rgba(46,41,67,.06)}
+.shop-icon{font-size:38px}.shop-name{font-size:14px;font-weight:950;margin-top:5px}.shop-price{font-size:11px;color:var(--muted);font-weight:900;margin:4px 0 10px}
+.shop-card button{width:100%}
+.pet-stage{position:relative;overflow:hidden;min-height:320px;border-radius:28px;padding:22px;text-align:center;background:linear-gradient(180deg,#dff5ff 0%,#fff4cf 58%,#c9efb8 59%,#a7df8e 100%);border:1px solid var(--border)}
+.pet-stage:before{content:"☁️        ☁️";white-space:pre;position:absolute;left:8%;right:8%;top:18px;font-size:34px;opacity:.8}
+.pet-character{font-size:100px;line-height:1;margin-top:62px;filter:drop-shadow(0 10px 8px rgba(0,0,0,.12));cursor:pointer;user-select:none}
+.pet-name{font-size:24px;font-weight:950;margin-top:8px}.pet-mood{font-size:12px;font-weight:850;color:#55556b;margin-top:4px}
+.pet-meter{height:13px;border-radius:999px;background:#ffffffaa;overflow:hidden;margin:14px auto 6px;max-width:330px;border:1px solid #ffffff}
+.pet-meter>div{height:100%;border-radius:inherit;background:linear-gradient(90deg,#67d391,#ffd84d,#ff8fba);transition:.3s}
+.pet-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pet-choice-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.pet-choice{border:2px solid transparent;background:#faf9ff;border-radius:15px;padding:9px;font-size:28px;cursor:pointer}.pet-choice.selected{border-color:var(--kid1);background:#fff}
+.collection-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.collectible{background:#fff;border:1px solid var(--border);border-radius:15px;padding:9px 4px;text-align:center}.collectible .cico{font-size:27px}.collectible .cname{font-size:8px;font-weight:900;color:var(--muted);margin-top:3px}
+.adventure-action{margin-top:8px;padding:8px 12px;border:0;border-radius:12px;background:var(--kid1);color:white;font-weight:900;cursor:pointer}
+.shop-editor-row{display:grid;grid-template-columns:44px minmax(100px,1fr) 82px 36px;gap:7px;align-items:center;margin-top:8px}
+.shop-editor-row input{min-width:0;width:100%}.mini-danger{border:0;background:#fee2e2;color:#b91c1c;border-radius:10px;height:38px;font-weight:950}
+.egg-reveal{font-size:72px;text-align:center;animation:bounceIn .55s ease}.purchase-log{display:grid;gap:7px;margin-top:9px}.purchase-row{background:#faf9ff;border:1px solid var(--border);border-radius:12px;padding:9px;font-size:10px;font-weight:850}
+@keyframes bounceIn{0%{transform:scale(.3) rotate(-12deg)}70%{transform:scale(1.18) rotate(5deg)}100%{transform:scale(1)}}
+@media(max-width:520px){.shop-grid{grid-template-columns:1fr 1fr}.bottom-inner{overflow-x:auto}.nav{min-width:50px}.collection-grid{grid-template-columns:repeat(4,1fr)}}
+
+
+/* v11: interactive pet, parent-only undo, voice picker */
+.pet-stage{position:relative;min-height:390px;overflow:hidden}
+.pet-character{display:inline-block;position:relative;z-index:3;transform-origin:50% 100%;will-change:transform;cursor:pointer}
+.pet-character.pet-hop{animation:petHop .75s cubic-bezier(.2,.8,.25,1)}
+.pet-character.pet-jump{animation:petJump .9s cubic-bezier(.2,.8,.25,1)}
+.pet-character.pet-wiggle{animation:petWiggle .72s ease}
+.pet-character.pet-sad{animation:petSad 2.1s ease-in-out infinite;filter:grayscale(.14) drop-shadow(0 8px 7px rgba(0,0,0,.10))}
+.pet-character.pet-happy{animation:petHappy 1.65s ease-in-out infinite;filter:drop-shadow(0 12px 9px rgba(0,0,0,.14))}
+.pet-face{font-size:32px;line-height:1;height:36px;margin-top:2px}
+.pet-speech{max-width:330px;margin:9px auto 0;background:#fff;border:1px solid var(--border);border-radius:18px;padding:10px 12px;font-size:11px;font-weight:900;box-shadow:0 7px 18px rgba(46,41,67,.08)}
+.pet-progress-wrap{position:relative;max-width:360px;margin:18px auto 2px;padding:22px 4px 0}
+.pet-progress-track{height:14px;border-radius:999px;background:#ffffffb8;border:1px solid #fff;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.08)}
+.pet-progress-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#80d8ff,#ffd95e,#8be29f);transition:width .45s ease}
+.pet-runner{position:absolute;top:0;font-size:30px;transform:translateX(-50%);transition:left .55s cubic-bezier(.2,.8,.25,1)}
+.pet-progress-labels{display:flex;justify-content:space-between;font-size:8px;font-weight:950;color:#57566b;margin-top:4px}
+.pet-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.parent-pet-card .pet-choice-grid{grid-template-columns:repeat(4,1fr)}
+.pet-admin-preview{display:flex;align-items:center;gap:12px;background:#faf9ff;border:1px solid var(--border);border-radius:16px;padding:10px;margin:9px 0}
+.pet-admin-preview .mini-pet{font-size:44px}
+.today-parent-list{display:grid;gap:7px;margin-top:8px}
+.today-parent-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#faf9ff;border:1px solid var(--border);border-radius:12px;padding:9px 10px;font-size:10px;font-weight:900}
+.voice-row{display:grid;grid-template-columns:minmax(150px,1fr) auto;gap:8px;align-items:center;margin-top:9px}
+.voice-row select{width:100%;border:1px solid var(--border);border-radius:12px;padding:10px;background:#fff;font:inherit}
+.task.done{cursor:default}
+.task.done .check{background:#22c55e;color:#fff;border-color:#22c55e}
+@keyframes petHop{0%,100%{transform:translateY(0) rotate(0)}28%{transform:translateY(-34px) rotate(-5deg)}52%{transform:translateY(-8px) rotate(4deg)}72%{transform:translateY(-18px) rotate(-2deg)}}
+@keyframes petJump{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(-62px) scale(1.06)}55%{transform:translateY(-8px) scale(.98)}72%{transform:translateY(-28px) scale(1.03)}}
+@keyframes petWiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(-10deg)}40%{transform:rotate(10deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(8deg)}}
+@keyframes petSad{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(6px) rotate(-2deg)}}
+@keyframes petHappy{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.04)}}
+
+
+/* v12 Mystery Egg cinematic */
+.egg-overlay{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.98),rgba(79,55,140,.92));display:none;align-items:center;justify-content:center;overflow:hidden}
+.egg-overlay.show{display:flex}
+.egg-scene{text-align:center;position:relative;width:min(92vw,520px);height:min(82vh,650px);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.egg-big{font-size:120px;line-height:1;filter:drop-shadow(0 20px 20px rgba(0,0,0,.18));transform:scale(.25);opacity:0;position:relative;z-index:4}
+.egg-big.arrive{animation:eggArrive .85s cubic-bezier(.18,.85,.25,1.25) forwards}
+.egg-big.shake{animation:eggShake .6s linear infinite}
+.egg-big.crack{animation:eggCrack .42s ease forwards}
+.egg-crack-lines{position:absolute;z-index:6;width:110px;height:120px;top:50%;left:50%;transform:translate(-50%,-52%);opacity:0;pointer-events:none}
+.egg-crack-lines.show{opacity:1}
+.egg-crack-lines span{position:absolute;width:5px;height:48px;background:#5b3a26;border-radius:4px;transform-origin:top}
+.egg-crack-lines span:nth-child(1){left:52px;top:21px;transform:rotate(24deg)}
+.egg-crack-lines span:nth-child(2){left:58px;top:53px;transform:rotate(-31deg)}
+.egg-crack-lines span:nth-child(3){left:42px;top:69px;transform:rotate(36deg);height:34px}
+.egg-reveal{display:none;position:relative;z-index:8;transform:scale(.1);opacity:0}
+.egg-reveal.show{display:block;animation:collectibleBurst .75s cubic-bezier(.15,.9,.24,1.35) forwards}
+.egg-reveal-icon{font-size:112px;filter:drop-shadow(0 16px 16px rgba(0,0,0,.15))}
+.egg-reveal-name{font-size:24px;font-weight:1000;margin-top:12px;color:#fff;text-shadow:0 3px 8px rgba(0,0,0,.25)}
+.egg-wow{font-size:13px;font-weight:950;color:#fff;margin-top:5px}
+.egg-close{display:none;margin-top:24px;border:0;border-radius:999px;padding:12px 22px;font-weight:950;background:#fff;color:#43305f;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.egg-close.show{display:inline-block}
+.egg-spark{position:absolute;z-index:3;font-size:24px;animation:sparkFly 1.35s ease-out forwards;pointer-events:none}
+@keyframes eggArrive{0%{transform:scale(.2) translateY(100px);opacity:0}70%{transform:scale(1.15) translateY(-8px);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes eggShake{0%,100%{transform:scale(1.12) rotate(0)}20%{transform:scale(1.12) rotate(-9deg)}40%{transform:scale(1.12) rotate(8deg)}60%{transform:scale(1.12) rotate(-7deg)}80%{transform:scale(1.12) rotate(7deg)}}
+@keyframes eggCrack{0%{transform:scale(1.15);opacity:1}55%{transform:scale(1.35);opacity:1}100%{transform:scale(2.2);opacity:0}}
+@keyframes collectibleBurst{0%{transform:scale(.1) translateY(60px);opacity:0}55%{transform:scale(1.28) translateY(-16px);opacity:1}100%{transform:scale(1) translateY(0);opacity:1}}
+@keyframes sparkFly{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:1}100%{transform:translate(var(--sx),var(--sy)) scale(1.4) rotate(320deg);opacity:0}}
+
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<div class="confetti" id="confetti"></div>
+<div class="egg-overlay" id="eggOverlay" aria-hidden="true">
+  <div class="egg-scene" id="eggScene">
+    <div class="egg-big" id="eggBig">🥚</div>
+    <div class="egg-crack-lines" id="eggCrackLines"><span></span><span></span><span></span></div>
+    <div class="egg-reveal" id="eggReveal">
+      <div class="egg-reveal-icon" id="eggRevealIcon">✨</div>
+      <div class="egg-reveal-name" id="eggRevealName"></div>
+      <div class="egg-wow">A magical collectible!</div>
+    </div>
+    <button class="egg-close" id="eggCloseBtn" type="button">Amazing! ✨</button>
+  </div>
+</div>
+
+<div class="app" id="app">
+  <header class="header">
+    <div class="brand">
+      <div class="logo">⭐</div>
+      <div><div class="title">Kids Daily Stars</div><div class="subtitle">Little wins, every day</div></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="sound-btn" id="voiceBtn" aria-label="Toggle encouraging voice" title="Natural voice encouragement">🗣️</button>
+      <button class="sound-btn" id="soundBtn" aria-label="Toggle sound effects" title="Sound effects">🔊</button>
+    </div>
+  </header>
+
+  <div class="profiles-wrap" id="profiles"></div>
+
+  <section class="panel active" id="today">
+    <div class="hero">
+      <h1 id="greeting"></h1>
+      <div class="date" id="date"></div>
+      <div class="hero-stats">
+        <div class="stat"><div class="n" id="todayPoints">0</div><div class="l">TODAY ⭐</div></div>
+        <div class="stat"><div class="n" id="monthPoints">0</div><div class="l">MONTH 🏆</div></div>
+        <div class="stat"><div class="n" id="streak">0</div><div class="l">STREAK 🔥</div></div>
+      </div>
+      <div class="goal">
+        <div class="goaltext"><span>Daily goal</span><span id="goalText"></span></div>
+        <div class="track"><div class="bar" id="bar"></div></div>
+      </div>
+    </div>
+
+    <div class="encourage" id="encourage"></div>
+    <div class="section-head"><div class="section-title">Today’s adventures</div><div class="section-meta" id="taskMeta"></div></div>
+    <div class="tasks" id="tasks"></div>
+  </section>
+
+  <section class="panel" id="calendarPanel">
+    <div class="card month-total"><div class="big" id="calTotal"></div><div class="small" id="calLabel"></div></div>
+    <div class="section-head"><div class="section-title">Calendar</div><div class="section-meta">Tap any date to see details</div></div>
+    <div class="calendar-toolbar">
+      <button type="button" class="cal-nav" id="prevMonthBtn" aria-label="Previous month">‹</button>
+      <div class="cal-month-title" id="calendarMonthTitle"></div>
+      <button type="button" class="cal-nav" id="nextMonthBtn" aria-label="Next month">›</button>
+    </div>
+    <div class="calendar" id="calendar"></div>
+    <div class="calendar-detail" id="calendarDetail">
+      <div class="calendar-detail-head">
+        <div>
+          <div class="calendar-detail-date" id="calendarDetailDate"></div>
+          <div class="calendar-detail-sub" id="calendarDetailStatus"></div>
+        </div>
+        <div class="calendar-detail-points" id="calendarDetailPoints">0 ⭐</div>
+      </div>
+      <div id="calendarDetailBody"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="badgesPanel">
+    <div class="section-head"><div class="section-title">Badges</div><div class="section-meta">Collect them all!</div></div>
+    <div class="badges" id="badges"></div>
+  </section>
+
+  <section class="panel" id="rewardsPanel">
+    <div class="reward-summary card">
+      <div><strong id="mapKidName"></strong><br><span id="mapProgressText"></span></div>
+      <div style="font-size:30px" id="mapAvatar"></div>
+    </div>
+
+    <div class="map-shell" id="rewardMap">
+      <div class="cloud c1"></div><div class="cloud c2"></div>
+      <div class="map-title">The Adventure Map</div>
+      <div class="map-note">Earn points ⭐ Move forward ⭐ Unlock rewards</div>
+      <div class="rainbow"></div>
+      <div class="castle">🏰</div>
+      <div class="candy c1">🍭</div><div class="candy c2">🍬</div><div class="candy c3">🧁</div><div class="candy c4">🍓</div>
+      <div class="hill h1"></div><div class="hill h2"></div><div class="hill h3"></div>
+      <svg class="path-svg" id="pathSvg" viewBox="0 0 1000 720" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="player" id="playerMarker"></div>
+      <div class="map-detail" id="mapDetail" style="position:absolute;left:18px;right:18px;bottom:16px;z-index:10">
+        <div class="detail-icon" id="mapDetailIcon">🗺️</div>
+        <div><strong id="mapDetailTitle">Tap a milestone</strong><small id="mapDetailText">See what is unlocked next.</small></div>
+      </div>
+    </div>
+
+    <div class="section-head"><div class="section-title">Rewards on the journey</div><div class="section-meta" id="rewardBalance"></div></div>
+    <div class="reward-cards" id="rewards"></div>
+  </section>
+
+
+  <section class="panel" id="shopPanel">
+    <div class="section-head"><div class="section-title">Star Shop 🛍️</div><div class="wallet-pill" id="shopWallet">0 ⭐</div></div>
+    <div class="card" style="margin-bottom:12px">
+      <strong id="shopKidName"></strong>
+      <div style="font-size:11px;color:var(--muted);font-weight:800;margin-top:4px">Spend saved stars on parent-created rewards or crack open a Mystery Egg. Up to 100 unused shop points carry into a new month.</div>
+    </div>
+    <div class="shop-grid" id="shopGrid"></div>
+    <div class="section-head" style="margin-top:16px"><div class="section-title">My collectibles</div><div class="section-meta" id="collectionCount"></div></div>
+    <div class="collection-grid" id="collectionGrid"></div>
+    <div class="section-head" style="margin-top:16px"><div class="section-title">Recent purchases</div></div>
+    <div class="purchase-log" id="purchaseLog"></div>
+  </section>
+
+  <section class="panel" id="petPanel">
+    <div class="section-head"><div class="section-title">My Pet 🐾</div><div class="wallet-pill" id="petWallet">0 ⭐</div></div>
+    <div class="pet-stage" id="petStage">
+      <div class="pet-character" id="petCharacter" role="button" aria-label="Pet"></div>
+      <div class="pet-face" id="petFace">🙂</div>
+      <div class="pet-name" id="petName"></div>
+      <div class="pet-mood" id="petMood"></div>
+
+      <div class="pet-progress-wrap">
+        <div class="pet-runner" id="petRunner">🐾</div>
+        <div class="pet-progress-track"><div class="pet-progress-fill" id="petCareBar"></div></div>
+        <div class="pet-progress-labels"><span>Start</span><span id="petGoalLabel">Daily goal</span></div>
+      </div>
+      <div style="font-size:10px;font-weight:900;color:#55556b" id="petCareText"></div>
+
+      <div class="pet-speech" id="petSpeech">Tap your pet to play!</div>
+      <div class="pet-actions">
+        <button class="btn soft" id="petSoundBtn">Pet 💕</button>
+        <button class="btn soft" id="petHopBtn">Hop 🐾</button>
+        <button class="btn soft" id="petPlayBtn">Play ✨</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="parentPanel">
+    <div class="card locked-zone" id="locked">
+      <div style="font-size:50px">🔐</div><h2>Parent Zone</h2>
+      <div style="font-size:12px;color:var(--muted);font-weight:750">Enter your 4-digit PIN</div>
+      <div class="pin-dots" id="pinDots"></div>
+      <div class="keypad" id="keypad"></div>
+      <div style="font-size:10px;color:var(--muted);margin-top:11px">Default PIN: 2468</div>
+    </div>
+
+    <div id="parentContent" style="display:none">
+      <div class="parent-grid">
+        <div>
+          <div class="card">
+            <h3>Kids</h3>
+            <div class="kids-admin" id="kidsAdmin"></div>
+            <hr style="border:0;border-top:1px solid var(--border);margin:14px 0">
+            <h4 id="kidFormTitle">Add a child</h4>
+            <div class="row"><input id="kidNameInput" type="text" placeholder="Child name"></div>
+            <div style="font-size:11px;font-weight:900;color:var(--muted);margin-top:10px">Choose an icon</div>
+            <div class="avatar-grid" id="avatarGrid"></div>
+            <div style="font-size:11px;font-weight:900;color:var(--muted);margin-top:10px">Choose a color</div>
+            <div class="color-grid" id="colorGrid"></div>
+            <div class="row">
+              <button class="btn primary" id="saveKidBtn">Add child</button>
+              <button class="btn soft" id="cancelKidEdit" style="display:none">Cancel</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Tasks for <span id="parentKid"></span></h3>
+            <div id="taskEditor"></div>
+            <div class="row"><input id="newTask" type="text" placeholder="New task"><input id="newPts" type="number" min="1" value="5"><button class="btn primary" id="addTask">Add</button></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card parent-pet-card">
+            <div class="custom-section-title"><h3 style="margin:0">Pet</h3><strong id="petAdminKidName"></strong></div>
+            <div class="custom-note">Only parents can choose or rename the pet.</div>
+            <div class="pet-admin-preview"><div class="mini-pet" id="petAdminPreview">🐶</div><div><strong id="petAdminPreviewName">Buddy</strong><div class="custom-note" id="petAdminProgress"></div></div></div>
+            <div class="pet-choice-grid" id="petChoices"></div>
+            <div class="row"><input id="petNameInput" maxlength="18" placeholder="Pet name"><button class="btn primary" id="savePetBtn">Save pet</button></div>
+          </div>
+
+          <div class="card">
+            <h3>Today's completed activities</h3>
+            <div class="custom-note">Kids cannot uncheck tasks. Use Undo here if something was checked by mistake.</div>
+            <div class="today-parent-list" id="parentTodayTasks"></div>
+          </div>
+
+          <div class="card">
+            <h3>Daily goal</h3>
+            <div class="row"><input id="goalInput" type="number" min="1"><button class="btn soft" id="saveGoal">Save goal</button></div>
+          </div>
+          <div class="card">
+            <div class="custom-section-title">
+              <h3 style="margin:0">Badge goals</h3>
+              <strong id="badgeKidName"></strong>
+            </div>
+            <div class="custom-note">Set easier or harder badge requirements for this child. Streak badges count days the daily goal was reached; point badges use this month's stars.</div>
+            <div class="custom-editor-list" id="badgeEditor"></div>
+            <div class="row"><button class="btn primary" id="saveBadges" type="button">Save badge goals</button><button class="btn soft" id="resetBadges" type="button">Use defaults</button></div>
+          </div>
+          <div class="card">
+            <div class="custom-section-title">
+              <h3 style="margin:0">Adventure Map</h3>
+              <strong id="rewardKidName"></strong>
+            </div>
+            <div class="custom-note">Each child can have different milestone names and point targets. Points are based on that child's monthly total.</div>
+            <div class="custom-editor-list" id="rewardEditor"></div>
+            <div class="row"><button class="btn primary" id="saveRewards" type="button">Save adventure</button><button class="btn soft" id="resetRewards" type="button">Use defaults</button></div>
+          </div>
+          <div class="card">
+            <div class="custom-section-title"><h3 style="margin:0">Star Shop</h3><strong id="shopAdminKidName"></strong></div>
+            <div class="custom-note">Create rewards this child can buy with saved stars. Mystery Egg is always available; you can change its price.</div>
+            <div id="shopEditor"></div>
+            <div class="row"><input id="newShopItem" placeholder="New reward, e.g. Pick movie"><input id="newShopPrice" type="number" min="1" value="50"><button class="btn primary" id="addShopItem">Add</button></div>
+          </div>
+          <div class="card">
+            <h3>Bonus points</h3>
+            <div class="row"><input id="bonus" type="number" min="1" value="5"><button class="btn soft" id="addBonus">Add bonus ⭐</button></div>
+          </div>
+          <div class="card">
+            <h3>Theme for <span id="themeKidName"></span></h3>
+            <div style="font-size:11px;color:var(--muted);font-weight:800">Each child can have their own theme. The app switches automatically when you switch kids.</div>
+            <div class="theme-grid" id="themeGrid"></div>
+          </div>
+          <div class="card">
+            <h3>Settings</h3>
+            <div class="row"><input id="pinInput" type="number" placeholder="New 4-digit PIN"><button class="btn soft" id="changePin">Change PIN</button></div>
+            <div style="font-size:11px;font-weight:900;color:var(--muted);margin-top:12px">Voice</div>
+            <div class="custom-note">Choose the most natural voice available on this device. “Enhanced” or “Premium” usually sounds best.</div>
+            <div class="voice-row"><select id="voiceSelect"></select><button class="btn soft" id="testVoiceBtn">Test voice</button></div>
+            <div class="row" style="margin-top:9px"><button class="btn soft" id="lockBtn">Lock Parent Zone</button><button class="btn danger" id="resetBtn">Reset all</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<nav class="bottom">
+  <div class="bottom-inner">
+    <button class="nav active" data-panel="today"><span class="ico">🏠</span>Today</button>
+    <button class="nav" data-panel="calendarPanel"><span class="ico">📅</span>Calendar</button>
+    <button class="nav" data-panel="badgesPanel"><span class="ico">🏅</span>Badges</button>
+    <button class="nav" data-panel="rewardsPanel"><span class="ico">🗺️</span>Adventure</button>
+    <button class="nav" data-panel="petPanel"><span class="ico">🐾</span>Pet</button>
+    <button class="nav" data-panel="shopPanel"><span class="ico">🛍️</span>Shop</button>
+    <button class="nav" data-panel="parentPanel"><span class="ico">🔒</span>Parent</button>
+  </div>
+</nav>
+
+<script>
+const KEY="kidsDailyStars_custom_v9";
+const BACKUP_KEY="kidsDailyStars_backup_before_v12";
+const AVATARS=["🦁","🐯","🦄","🐼","🐨","🦊","🐰","🐸","🐵","🤖","🚀","⚽","🏀","🧚","🦖","🐬"];
+const COLORS=[
+  ["#7c3aed","#ec4899"],["#2563eb","#14b8a6"],["#f97316","#facc15"],
+  ["#ec4899","#8b5cf6"],["#22c55e","#06b6d4"],["#ef4444","#f59e0b"]
+];
+const THEMES=[
+  {id:"candy",name:"Candy",swatch:"linear-gradient(135deg,#fdebf5,#e9f4ff)"},
+  {id:"ocean",name:"Ocean",swatch:"linear-gradient(135deg,#8ddcff,#bbefdd)"},
+  {id:"space",name:"Space",swatch:"linear-gradient(135deg,#25234c,#6c4b91)"},
+  {id:"forest",name:"Forest",swatch:"linear-gradient(135deg,#a9de8d,#dff4ee)"},
+  {id:"sunset",name:"Sunset",swatch:"linear-gradient(135deg,#ffc7b1,#f7a9c5)"},
+  {id:"rainbow",name:"Rainbow",swatch:"linear-gradient(135deg,#ffb7d5,#9bd7ff,#b6efae)"}
+];
+const copy=o=>JSON.parse(JSON.stringify(o));
+
+function smartTaskIcon(name=""){
+  const s=String(name).toLowerCase();
+  const rules=[
+    [/(brush|teeth|tooth|floss|dent)/,"🪥"],
+    [/(bath|shower|wash body|clean up body)/,"🛁"],
+    [/(hair|comb|brush hair)/,"💇"],
+    [/(dress|clothes|uniform|pajama|pyjama)/,"👕"],
+    [/(shoe|sock)/,"👟"],
+    [/(read|book|story)/,"📚"],
+    [/(homework|study|school work|worksheet|practice writing|spell)/,"✏️"],
+    [/(school|class|bus)/,"🎒"],
+    [/(tidy|clean room|clean up|pick up|toys|organize)/,"🧸"],
+    [/(bed|sleep|nap|bedtime)/,"🛏️"],
+    [/(eat|breakfast|lunch|dinner|meal|food)/,"🍽️"],
+    [/(fruit|vegetable|veggie)/,"🍎"],
+    [/(water|drink|hydrate)/,"💧"],
+    [/(help|chore|dishes|laundry|fold|table)/,"🤝"],
+    [/(kind|share|sharing|nice|thank|please)/,"💛"],
+    [/(pray|prayer|temple|god|sloka|shloka)/,"🙏"],
+    [/(dance|bharatanatyam)/,"💃"],
+    [/(exercise|workout|run|walk|sport|soccer|football|hockey|bike)/,"🏃"],
+    [/(music|piano|sing|song)/,"🎵"],
+    [/(draw|paint|art|color|colour|craft)/,"🎨"],
+    [/(potty|toilet|bathroom)/,"🚽"],
+    [/(medicine|vitamin)/,"💊"],
+    [/(pet|dog|cat|feed pet)/,"🐾"],
+    [/(outside|park|play outside|outdoor)/,"🌳"],
+    [/(screen|ipad|tablet|tv)/,"📱"],
+    [/(pack|bag|backpack)/,"🎒"]
+  ];
+  for(const [re,icon] of rules) if(re.test(s)) return icon;
+  return "⭐";
+}
+const defaultTasks=()=>[
+  {id:"brush_"+Date.now(),name:"Brush teeth",points:2,icon:"🪥"},
+  {id:"dress_"+Date.now(),name:"Get dressed",points:2,icon:"👕"},
+  {id:"read_"+Date.now(),name:"Reading",points:5,icon:"📚"},
+  {id:"tidy_"+Date.now(),name:"Tidy up",points:5,icon:"🧸"},
+  {id:"help_"+Date.now(),name:"Help at home",points:3,icon:"🤝"}
+];
+const defaultBadges=()=>[
+  {id:"first",icon:"🌟",name:"First Star",type:"activeDays",value:1},
+  {id:"streak3",icon:"🔥",name:"3-Day Streak",type:"streak",value:3},
+  {id:"streak7",icon:"🚀",name:"7-Day Streak",type:"streak",value:7},
+  {id:"points100",icon:"💯",name:"Century Club",type:"monthlyPoints",value:100},
+  {id:"points300",icon:"🏆",name:"Super Star",type:"monthlyPoints",value:300},
+  {id:"points500",icon:"👑",name:"Legend",type:"monthlyPoints",value:500}
+];
+const defaultRewards=()=>[
+  {p:50,n:"Rainbow Bridge",i:"🌈"},
+  {p:100,n:"Sweet Treat Town",i:"🍭"},
+  {p:200,n:"Kindness Forest",i:"🌳"},
+  {p:300,n:"Bravery Mountain",i:"⛰️"},
+  {p:500,n:"Dream Castle",i:"🏰"}
+];
+const PETS=[
+  {id:"dog",icon:"🐶",label:"Puppy"},{id:"cat",icon:"🐱",label:"Kitten"},
+  {id:"bunny",icon:"🐰",label:"Bunny"},{id:"dino",icon:"🦖",label:"Dino"},
+  {id:"unicorn",icon:"🦄",label:"Unicorn"},{id:"panda",icon:"🐼",label:"Panda"},
+  {id:"fox",icon:"🦊",label:"Fox"},{id:"dragon",icon:"🐲",label:"Dragon"}
+];
+const COLLECTIBLES=[
+  {i:"💎",n:"Magic Gem"},{i:"🦋",n:"Moon Butterfly"},{i:"🌈",n:"Pocket Rainbow"},
+  {i:"🧸",n:"Tiny Teddy"},{i:"🚀",n:"Star Rocket"},{i:"🦖",n:"Mini Dino"},
+  {i:"🦄",n:"Crystal Unicorn"},{i:"🐚",n:"Mermaid Shell"},{i:"👑",n:"Golden Crown"},
+  {i:"🍄",n:"Fairy Mushroom"},{i:"🐉",n:"Baby Dragon"},{i:"🌟",n:"Wish Star"}
+];
+const defaultShop=()=>[
+  {id:"egg",icon:"🥚",name:"Mystery Egg",price:40,type:"egg"},
+  {id:"reward_movie",icon:"🎬",name:"Pick the family movie",price:75,type:"reward"},
+  {id:"reward_treat",icon:"🍦",name:"Choose a special treat",price:60,type:"reward"}
+];
+
+function badgeRequirementText(b){
+  if(b.type==="activeDays")return `${b.value} active day${b.value===1?"":"s"}`;
+  if(b.type==="streak")return `${b.value}-day goal streak`;
+  return `${b.value} points this month`;
+}
+
+function dkeySafe(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}
+
+const base={
+  activeKid:null,sound:true,voice:true,selectedVoiceName:"",theme:"candy",pin:"2468",
+  kids:{},
+  rewards:defaultRewards()
+};
+function starterState(){
+  const s=copy(base);
+  const id="kid_"+Date.now();
+  s.kids[id]={name:"My Kid",emoji:"🦁",a:"#7c3aed",b:"#ec4899",goal:20,history:{},tasks:defaultTasks(),badges:defaultBadges(),rewards:defaultRewards(),theme:"candy",wallet:0,walletMonth:dkeySafe(),walletCarry:0,walletModelVersion:2,shop:defaultShop(),collectibles:[],purchases:[],pet:{type:"dog",name:"Buddy",care:20},adventureFinds:{}};
+  s.activeKid=id;
+  return s;
+}
+function backupExistingData(){
+  try{
+    if(!localStorage.getItem(BACKUP_KEY)){
+      const existing=localStorage.getItem(KEY);
+      if(existing)localStorage.setItem(BACKUP_KEY,existing);
+    }
+  }catch(e){}
+}
+function load(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(raw)return normalize(JSON.parse(raw));
+    for(const oldKey of ["kidsDailyStars_custom_v9","kidsDailyStars_custom_v8","kidsDailyStars_custom_v6","kidsDailyStars_custom_v5","kidsDailyStars_custom_v4","kidsDailyStars_interactive_v3","kidsDailyStars_v2","kidsDailyStars_v1"]){
+      const oldRaw=localStorage.getItem(oldKey);
+      if(!oldRaw)continue;
+      const old=JSON.parse(oldRaw),s=copy(base);
+      const oldKids=old.kids||{};
+      Object.entries(oldKids).forEach(([oid,k],idx)=>{
+        const nid="kid_"+Date.now()+"_"+idx;
+        s.kids[nid]={
+          name:k.name||oid,
+          emoji:k.emoji||(idx===0?"🦁":"🐯"),
+          a:k.a||k.accent||COLORS[idx%COLORS.length][0],
+          b:k.b||k.accent2||COLORS[idx%COLORS.length][1],
+          goal:+k.goal||+k.dailyGoal||20,
+          history:k.history||{},
+          tasks:(k.tasks||defaultTasks()).map((t,n)=>({id:t.id||("t_"+Date.now()+"_"+n),name:t.name||"Task",points:+t.points||1,icon:(t.icon&&t.icon!=="⭐")?t.icon:smartTaskIcon(t.name||"Task")})),
+          badges:Array.isArray(k.badges)?copy(k.badges):defaultBadges(),
+          rewards:Array.isArray(k.rewards)?copy(k.rewards):copy(old.rewards||base.rewards||defaultRewards()),
+          theme:k.theme||old.theme||"candy",
+          wallet:Number.isFinite(+k.wallet)?+k.wallet:0,
+          walletMonth:k.walletMonth||dkeySafe(),
+          walletCarry:Number.isFinite(+k.walletCarry)?+k.walletCarry:0,
+          walletModelVersion:+k.walletModelVersion||0,
+          shop:Array.isArray(k.shop)?copy(k.shop):defaultShop(),
+          collectibles:Array.isArray(k.collectibles)?copy(k.collectibles):[],
+          purchases:Array.isArray(k.purchases)?copy(k.purchases):[],
+          pet:k.pet||{type:"dog",name:"Buddy",care:20},
+          adventureFinds:k.adventureFinds||{}
+        };
+      });
+      const ids=Object.keys(s.kids);
+      if(!ids.length)return starterState();
+      s.activeKid=ids[0];
+      s.pin=String(old.pin||"2468");
+      s.sound=old.sound!==false;
+      return normalize(s)
+    }
+  }catch(e){}
+  return starterState()
+}
+function normalize(s){
+  s.selectedVoiceName=s.selectedVoiceName||"";
+  s.pin=String(s.pin||"2468");s.sound=s.sound!==false;s.voice=s.voice!==false;s.theme=s.theme||"candy";s.rewards=s.rewards||copy(base.rewards);s.kids=s.kids||{};
+  const ids=Object.keys(s.kids);
+  if(!ids.length)return starterState();
+  if(!s.activeKid||!s.kids[s.activeKid])s.activeKid=ids[0];
+  ids.forEach((id,idx)=>{
+    const k=s.kids[id];
+    k.name=k.name||"Kid";k.emoji=k.emoji||AVATARS[idx%AVATARS.length];
+    k.a=k.a||COLORS[idx%COLORS.length][0];k.b=k.b||COLORS[idx%COLORS.length][1];
+    k.goal=+k.goal||20;k.history=k.history||{};k.tasks=(k.tasks||defaultTasks()).map((t,n)=>({...t,id:t.id||("t_"+Date.now()+"_"+n),icon:(t.icon&&t.icon!=="⭐")?t.icon:smartTaskIcon(t.name||"Task"),points:+t.points||1}));
+    k.badges=(Array.isArray(k.badges)&&k.badges.length?k.badges:defaultBadges()).map((b,n)=>({
+      id:b.id||("badge_"+n),icon:b.icon||"🏅",name:b.name||"Badge",
+      type:["activeDays","streak","monthlyPoints"].includes(b.type)?b.type:(n===0?"activeDays":n<3?"streak":"monthlyPoints"),
+      value:Math.max(1,+b.value||defaultBadges()[n]?.value||1)
+    }));
+    k.rewards=(Array.isArray(k.rewards)&&k.rewards.length?k.rewards:copy(s.rewards||defaultRewards())).slice(0,5).map((r,n)=>({
+      p:Math.max(1,+r.p||defaultRewards()[n]?.p||50),n:r.n||defaultRewards()[n]?.n||"Reward",i:r.i||defaultRewards()[n]?.i||"⭐"
+    }));
+    while(k.rewards.length<5)k.rewards.push(copy(defaultRewards()[k.rewards.length]));
+    k.theme=THEMES.some(t=>t.id===k.theme)?k.theme:(s.theme||"candy");
+    k.wallet=Math.max(0,+k.wallet||0);k.walletMonth=k.walletMonth||dkeySafe();k.walletCarry=Math.max(0,+k.walletCarry||0);k.walletModelVersion=+k.walletModelVersion||0;
+    k.shop=(Array.isArray(k.shop)&&k.shop.length?k.shop:defaultShop()).map((x,n)=>({id:x.id||("shop_"+n),icon:x.icon||"🎁",name:x.name||"Reward",price:Math.max(1,+x.price||10),type:x.type==="egg"?"egg":"reward"}));
+    if(!k.shop.some(x=>x.type==="egg"))k.shop.unshift(defaultShop()[0]);
+    k.collectibles=Array.isArray(k.collectibles)?k.collectibles:[];
+    k.purchases=Array.isArray(k.purchases)?k.purchases:[];
+    k.pet=k.pet||{type:"dog",name:"Buddy",care:20};k.pet.type=PETS.some(p=>p.id===k.pet.type)?k.pet.type:"dog";k.pet.name=k.pet.name||"Buddy";k.pet.care=Math.max(0,Math.min(100,+k.pet.care||0));
+    k.adventureFinds=k.adventureFinds||{};
+  });
+  return s
+}
+backupExistingData();
+let state=load(),unlocked=false,pinEntry="",audioCtx=null,editingKidId=null,selectedAvatar=AVATARS[0],selectedColor=0;
+Object.values(state.kids||{}).forEach(k=>settleWallet(k));
+try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function kid(){return state.kids[state.activeKid]}
+function dkey(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+let calendarViewDate=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+let selectedCalendarDate=dkey(new Date());
+function mkey(){return dkey().slice(0,7)}
+function rec(k,key=dkey()){if(!k.history[key])k.history[key]={checked:{},bonus:0};if(!k.history[key].checked)k.history[key].checked={};return k.history[key]}
+function pts(k,key){const r=k.history[key]||{checked:{},bonus:0};return (r.bonus||0)+k.tasks.reduce((s,t)=>s+(r.checked?.[t.id]?+t.points:0),0)}
+function mtotal(k){return Object.keys(k.history).filter(x=>x.startsWith(mkey())).reduce((s,x)=>s+pts(k,x),0)}
+function purchaseMonth(x){
+  if(!x?.at)return "";
+  const d=new Date(x.at);
+  if(Number.isNaN(d.getTime()))return String(x.at).slice(0,7);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+}
+function monthSpent(k,month=dkeySafe()){
+  return (k.purchases||[]).filter(x=>purchaseMonth(x)===month).reduce((s,x)=>s+(+x.price||0),0);
+}
+function earnedForMonth(k,month=dkeySafe()){
+  return Object.keys(k.history||{}).filter(key=>key.startsWith(month)).reduce((sum,key)=>sum+pts(k,key),0);
+}
+function settleWallet(k){
+  const now=dkeySafe();
+  k.purchases=Array.isArray(k.purchases)?k.purchases:[];
+  if(k.walletModelVersion!==2){
+    const earned=earnedForMonth(k,now),spent=monthSpent(k,now);
+    // Infer any genuine carry-in from the old wallet without losing purchases.
+    // This also repairs old installs where early-month stars were never credited to the shop.
+    k.walletCarry=Math.max(0,Math.min(100,(+k.wallet||0)+spent-earned));
+    k.walletMonth=now;
+    k.walletModelVersion=2;
+  }else if(k.walletMonth!==now){
+    k.walletCarry=Math.min(100,Math.max(0,+k.wallet||0));
+    k.walletMonth=now;
+  }
+  const earned=earnedForMonth(k,now),spent=monthSpent(k,now);
+  k.wallet=Math.max(0,(+k.walletCarry||0)+earned-spent);
+  return k.wallet;
+}
+function addWalletPoints(k,n){
+  // The wallet is derived from checked activities/bonus points and purchases.
+  // Calling this after a task/bonus/undo simply refreshes the accurate balance.
+  settleWallet(k);
+}
+
+function petGoalProgress(k){
+  const goal=Math.max(1,+k.goal||20);
+  const today=pts(k,dkey());
+  return {today,goal,ratio:Math.max(0,Math.min(1,today/goal)),pct:Math.max(0,Math.min(100,Math.round(today/goal*100)))};
+}
+function animatePet(kind){
+  const el=$("petCharacter");if(!el)return;
+  ["pet-hop","pet-jump","pet-wiggle"].forEach(c=>el.classList.remove(c));
+  void el.offsetWidth;
+  el.classList.add(kind);
+  setTimeout(()=>el.classList.remove(kind),1000);
+}
+function petVisualReaction(k,action="visit"){
+  const p=petGoalProgress(k),el=$("petCharacter"),face=$("petFace"),speech=$("petSpeech");
+  el.classList.remove("pet-sad","pet-happy");
+  if(p.ratio>=1){
+    el.classList.add("pet-happy");face.textContent="🤩";
+    speech.textContent="Goal complete! ✨";
+    if(action==="visit")animatePet("pet-jump");
+  }else if(p.ratio>=.65){
+    el.classList.add("pet-happy");face.textContent="😄";
+    speech.textContent="So close! ⭐";
+    if(action==="visit")animatePet("pet-hop");
+  }else if(p.ratio>=.3){
+    face.textContent="🙂";speech.textContent="Let's play! 🐾";
+    if(action==="visit")animatePet("pet-wiggle");
+  }else if(p.today>0){
+    face.textContent="😊";speech.textContent="Nice start! ⭐";
+  }else{
+    el.classList.add("pet-sad");face.textContent="🥺";
+    speech.textContent="I need some stars today.";
+  }
+}
+
+function magicSound(){[659,784,988,1319].forEach((f,i)=>tone(f,.18,"sine",.045,i*.07))}
+function crackSound(){
+  const a=audio();if(!a)return;
+  try{
+    [0,.10,.21].forEach((delay,idx)=>{
+      const len=Math.floor(a.sampleRate*(.07+idx*.025));
+      const buf=a.createBuffer(1,len,a.sampleRate),data=buf.getChannelData(0);
+      for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*(1-i/len);
+      const src=a.createBufferSource(),gain=a.createGain(),filter=a.createBiquadFilter();
+      filter.type="highpass";filter.frequency.value=650+idx*450;
+      gain.gain.value=.12+idx*.035;
+      src.buffer=buf;src.connect(filter);filter.connect(gain);gain.connect(a.destination);
+      src.start(a.currentTime+delay);
+    });
+    tone(150,.18,"triangle",.07,.02);tone(105,.22,"sawtooth",.035,.18);
+  }catch(e){}
+}
+function eggSparkles(){
+  const scene=$("eggScene");if(!scene)return;
+  const icons=["✨","⭐","💫","🌟","🪄","💎"];
+  for(let i=0;i<34;i++){
+    const s=document.createElement("span");s.className="egg-spark";
+    s.textContent=icons[i%icons.length];
+    s.style.left="50%";s.style.top="48%";
+    const angle=(Math.PI*2*i/34)+(Math.random()*.25);
+    const dist=100+Math.random()*230;
+    s.style.setProperty("--sx",Math.cos(angle)*dist+"px");
+    s.style.setProperty("--sy",Math.sin(angle)*dist+"px");
+    s.style.animationDelay=(Math.random()*.18)+"s";
+    scene.appendChild(s);setTimeout(()=>s.remove(),1700);
+  }
+}
+function showEggReveal(c){
+  const ov=$("eggOverlay"),egg=$("eggBig"),lines=$("eggCrackLines"),reveal=$("eggReveal"),close=$("eggCloseBtn");
+  if(!ov)return;
+  ov.classList.add("show");ov.setAttribute("aria-hidden","false");
+  egg.className="egg-big";lines.classList.remove("show");reveal.classList.remove("show");close.classList.remove("show");
+  $("eggRevealIcon").textContent=c.i;$("eggRevealName").textContent=c.n;
+  void egg.offsetWidth;egg.classList.add("arrive");
+  magicSound();
+  setTimeout(()=>{egg.classList.add("shake");eggSparkles();},700);
+  setTimeout(()=>{crackSound();lines.classList.add("show");egg.classList.remove("shake");egg.classList.add("crack");},1500);
+  setTimeout(()=>{lines.classList.remove("show");reveal.classList.add("show");eggSparkles();magicSound();confetti();},1950);
+  setTimeout(()=>close.classList.add("show"),2500);
+}
+function closeEggReveal(){
+  const ov=$("eggOverlay");if(ov){ov.classList.remove("show");ov.setAttribute("aria-hidden","true")}
+}
+
+function streak(k){let d=new Date(),n=0;for(let i=0;i<100;i++){const key=dkey(d);if(pts(k,key)>=k.goal){n++;d.setDate(d.getDate()-1)}else if(i===0)d.setDate(d.getDate()-1);else break}return n}
+
+function audio(){if(!state.sound)return null;try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}catch(e){return null}}
+function tone(freq,dur=.1,type="sine",vol=.06,delay=0){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+delay;o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+.03)}
+function soundCheck(){tone(520,.09);tone(780,.14,"sine",.06,.07)}
+function soundUndo(){tone(420,.09,"triangle",.04);tone(310,.12,"triangle",.04,.06)}
+function soundGoal(){[523,659,784,1047].forEach((f,i)=>tone(f,.22,"sine",.065,i*.09))}
+
+/* Spoken encouragement — uses the browser's built-in speech engine, so no audio files are needed. */
+let lastSpokenAt=0;
+function getBestVoice(){
+  if(!("speechSynthesis" in window)) return null;
+  const voices=window.speechSynthesis.getVoices() || [];
+  if(state.selectedVoiceName){
+    const chosen=voices.find(v=>v.name===state.selectedVoiceName);
+    if(chosen)return chosen;
+  }
+  const english=voices.filter(v=>v.lang && v.lang.toLowerCase().startsWith("en"));
+  const natural=english.find(v=>/premium|enhanced|natural|neural|siri/i.test(v.name));
+  if(natural)return natural;
+  const preferredNames=["Samantha","Ava","Karen","Moira","Tessa","Serena","Daniel"];
+  for(const name of preferredNames){
+    const exact=english.find(v=>v.name===name);
+    if(exact)return exact;
+  }
+  return english.find(v=>v.lang.toLowerCase()==="en-us") || english[0] || voices[0] || null;
+}
+
+function renderVoicePicker(){
+  const sel=$("voiceSelect");if(!sel||!("speechSynthesis" in window))return;
+  const voices=(window.speechSynthesis.getVoices()||[]).filter(v=>v.lang&&v.lang.toLowerCase().startsWith("en"));
+  sel.innerHTML="";
+  if(!voices.length){const o=document.createElement("option");o.textContent="Default device voice";o.value="";sel.appendChild(o);return}
+  voices.sort((a,b)=>{
+    const score=v=>/premium|enhanced|natural|neural|siri/i.test(v.name)?0:1;
+    return score(a)-score(b)||a.name.localeCompare(b.name);
+  });
+  const auto=document.createElement("option");auto.value="";auto.textContent="Best available automatically";sel.appendChild(auto);
+  voices.forEach(v=>{const o=document.createElement("option");o.value=v.name;o.textContent=`${v.name} (${v.lang})`;sel.appendChild(o)});
+  sel.value=state.selectedVoiceName||"";
+}
+function speak(message, force=false){
+  if(!state.voice || !("speechSynthesis" in window)) return;
+  const now=Date.now();
+  if(!force && now-lastSpokenAt<700) return;
+  lastSpokenAt=now;
+
+  try{
+    window.speechSynthesis.cancel();
+
+    const u=new SpeechSynthesisUtterance(message);
+    u.lang="en-US";
+
+    // Tune closer to the calmer cadence of Apple's assistant voices.
+    u.rate=0.92;
+    u.pitch=1.0;
+    u.volume=0.9;
+
+    const preferred=getBestVoice();
+    if(preferred) u.voice=preferred;
+
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function taskVoice(k, beforePoints, afterPoints){
+  const g=Math.max(1,+k.goal||20);
+  const beforeRatio=beforePoints/g, afterRatio=afterPoints/g;
+  if(afterPoints>=g && beforePoints<g){
+    speak(pick([
+      `You did it, ${k.name}! I'm so proud of you!`,
+      `Yay, ${k.name}! You reached your goal!`,
+      `Amazing work, ${k.name}! You did it!`
+    ]), true);
+    return;
+  }
+  if(afterRatio>=0.75 && beforeRatio<0.75){
+    speak(pick([
+      `Yay, ${k.name}! You're getting really close!`,
+      `Almost there, ${k.name}. Keep going!`,
+      `You're so close now, ${k.name}!`
+    ]), true);
+    return;
+  }
+  if(afterRatio>=0.45 && beforeRatio<0.45){
+    speak(pick([
+      `Great work, ${k.name}! You're already halfway there!`,
+      `Nice job, ${k.name}. Keep it up!`,
+      `You're doing such a great job, ${k.name}!`
+    ]));
+    return;
+  }
+  speak(pick([
+    `You did it, ${k.name}!`,
+    `Great job, ${k.name}!`,
+    `Nice work, ${k.name}!`,
+    `That was awesome, ${k.name}!`,
+    `Way to go, ${k.name}!`,
+    `Yes! You got it, ${k.name}!`
+  ]));
+}
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),1300)}
+function confetti(){const c=$("confetti"),cols=["#7c3aed","#ec4899","#3b82f6","#22c55e","#f59e0b"];for(let i=0;i<42;i++){const s=document.createElement("span");s.style.left=Math.random()*100+"%";s.style.background=cols[i%cols.length];s.style.animationDelay=Math.random()*.35+"s";c.appendChild(s);setTimeout(()=>s.remove(),2100)}}
+function starsOn(el){for(let i=0;i<4;i++){const s=document.createElement("span");s.className="star-float";s.textContent=i%2?"✨":"⭐";s.style.left=(50+Math.random()*35-17)+"%";s.style.top=(42+Math.random()*20-10)+"%";s.style.animationDelay=(i*.05)+"s";el.appendChild(s);setTimeout(()=>s.remove(),950)}}
+function taskConfetti(el){
+  const rect=el.getBoundingClientRect();
+  const x=rect.right-35, y=rect.top+rect.height/2;
+  const colors=["#ff4f87","#ffd43b","#48c6ef","#7c3aed","#22c55e","#ff8a3d"];
+  for(let i=0;i<26;i++){
+    const p=document.createElement("span");
+    p.className="task-confetti-piece";
+    p.style.left=x+"px";p.style.top=y+"px";
+    p.style.background=colors[i%colors.length];
+    const angle=(Math.PI*2*i/26)+(Math.random()*.35);
+    const dist=42+Math.random()*75;
+    p.style.setProperty("--dx",Math.cos(angle)*dist+"px");
+    p.style.setProperty("--dy",Math.sin(angle)*dist+"px");
+    p.style.setProperty("--rot",(180+Math.random()*540)+"deg");
+    p.style.animationDelay=(Math.random()*.08)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1100);
+  }
+}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function attr(s){return safe(s)}
+function encouragement(p,g){if(p===0)return"Pick your first adventure! 🌟";if(p<g*.4)return"Great start — keep going! 💪";if(p<g*.75)return"You’re getting closer! 🚀";if(p<g)return"Almost there! One more push! ⭐";return"Goal complete — superstar mode! 🏆"}
+
+function theme(){
+  const k=kid();
+  document.documentElement.style.setProperty("--kid1",k.a);
+  document.documentElement.style.setProperty("--kid2",k.b);
+  document.body.dataset.theme=k.theme||state.theme||"candy";
+}
+function render(){
+  theme();const k=kid();settleWallet(k);const p=pts(k,dkey()),total=mtotal(k),s=streak(k),now=new Date(),h=now.getHours();
+  $("greeting").textContent=`${h<12?"Good morning":h<18?"Good afternoon":"Good evening"}, ${k.name}!`;
+  $("date").textContent=now.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});
+  $("todayPoints").textContent=p;$("monthPoints").textContent=total;$("streak").textContent=s;
+  $("goalText").textContent=`${p} / ${k.goal} points`;$("bar").style.width=Math.min(100,p/k.goal*100)+"%";
+  $("encourage").textContent=encouragement(p,k.goal);
+  $("voiceBtn").textContent=state.voice?"🗣️":"🤐";
+  $("soundBtn").textContent=state.sound?"🔊":"🔇";
+  renderProfiles();renderTasks();renderCalendar();renderBadges();renderRewards();renderPet();renderShop();renderParent();save()
+}
+function renderProfiles(){
+  const box=$("profiles");box.innerHTML="";
+  Object.entries(state.kids).forEach(([id,k])=>{
+    const b=document.createElement("button");b.className="profile"+(state.activeKid===id?" active":"");b.style.setProperty("--accent",k.a);
+    b.innerHTML=`<div class="avatar">${k.emoji}</div><div><div class="pname">${safe(k.name)}</div><div class="pscore">${mtotal(k)} points this month ⭐</div></div>`;
+    b.addEventListener("click",()=>{state.activeKid=id;soundCheck();render()});box.appendChild(b)
+  })
+}
+function renderTasks(){
+  const k=kid(),r=rec(k),box=$("tasks");box.innerHTML="";let done=0;
+  k.tasks.forEach(t=>{
+    const yes=!!r.checked[t.id];if(yes)done++;
+    const b=document.createElement("button");b.className="task"+(yes?" done":"");
+    b.innerHTML=`<div class="task-icon">${t.icon}</div><div class="task-main"><div class="task-name">${safe(t.name)}</div><div class="task-points">+${t.points} points</div></div><div class="check">${yes?"✓":""}</div>`;
+    b.addEventListener("click",()=>{
+      if(yes){
+        soundCheck();
+        toast("Done for today ✓ Ask a parent to undo.");
+        return;
+      }
+      const beforePoints=pts(k,dkey());
+      const beforeGoal=beforePoints>=k.goal;
+      r.checked[t.id]=true;
+      addWalletPoints(k,+t.points);
+      const afterPoints=pts(k,dkey());
+      soundCheck();starsOn(b);taskConfetti(b);
+      toast(`+${t.points} ⭐ Great job!`);
+      setTimeout(()=>taskVoice(k,beforePoints,afterPoints),120);
+      const afterGoal=afterPoints>=k.goal;
+      if(afterGoal&&!beforeGoal){setTimeout(()=>{soundGoal();confetti()},150)}
+      render()
+    });
+    box.appendChild(b)
+  });
+  $("taskMeta").textContent=`${done}/${k.tasks.length} done`
+}
+function renderCalendar(){
+  const k=kid();
+  const y=calendarViewDate.getFullYear(),m=calendarViewDate.getMonth();
+  const first=new Date(y,m,1),last=new Date(y,m+1,0),box=$("calendar");
+  const monthPrefix=`${y}-${String(m+1).padStart(2,"0")}`;
+  box.innerHTML="";
+  $("calendarMonthTitle").textContent=calendarViewDate.toLocaleDateString(undefined,{month:"long",year:"numeric"});
+
+  ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(x=>{
+    const e=document.createElement("div");
+    e.className="dow";e.textContent=x;box.appendChild(e);
+  });
+  for(let i=0;i<first.getDay();i++)box.appendChild(document.createElement("div"));
+
+  const todayKey=dkey(new Date());
+  for(let d=1;d<=last.getDate();d++){
+    const dt=new Date(y,m,d),key=dkey(dt),p=pts(k,key),e=document.createElement("button");
+    e.type="button";
+    e.className="day"+(key===todayKey?" today":"")+(key===selectedCalendarDate?" selected":"")+(key>todayKey?" future":"");
+    e.innerHTML=`<div class="num">${d}</div><div class="pts">${p?p+" pts":"—"}</div><div class="star">${p>=k.goal?"⭐":""}</div>`;
+    e.addEventListener("click",()=>{
+      selectedCalendarDate=key;
+      soundCheck();
+      renderCalendar();
+    });
+    box.appendChild(e);
+  }
+
+  const monthTotalValue=Object.keys(k.history)
+    .filter(x=>x.startsWith(monthPrefix))
+    .reduce((sum,key)=>sum+pts(k,key),0);
+
+  $("calTotal").textContent=monthTotalValue+" ⭐";
+  $("calLabel").textContent=`${k.name}'s ${calendarViewDate.toLocaleDateString(undefined,{month:"long",year:"numeric"})} total`;
+  renderCalendarDetail();
+}
+function renderCalendarDetail(){
+  const k=kid(),key=selectedCalendarDate;
+  const parts=key.split("-").map(Number);
+  const dt=new Date(parts[0],parts[1]-1,parts[2]);
+  const r=k.history[key]||{checked:{},bonus:0};
+  const total=pts(k,key),todayKey=dkey(new Date());
+
+  $("calendarDetailDate").textContent=dt.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+  $("calendarDetailPoints").textContent=total+" ⭐";
+
+  if(key>todayKey){
+    $("calendarDetailStatus").textContent="Future date";
+  }else if(total>=k.goal){
+    $("calendarDetailStatus").textContent=`Daily goal reached 🎉 • Goal: ${k.goal} points`;
+  }else if(total>0){
+    $("calendarDetailStatus").textContent=`${Math.max(0,k.goal-total)} points short of the daily goal`;
+  }else{
+    $("calendarDetailStatus").textContent="No activity recorded";
+  }
+
+  const body=$("calendarDetailBody");
+  body.innerHTML="";
+  const completed=k.tasks.filter(t=>r.checked && r.checked[t.id]);
+
+  if(completed.length){
+    const list=document.createElement("div");
+    list.className="calendar-task-list";
+    completed.forEach(t=>{
+      const row=document.createElement("div");
+      row.className="calendar-task-item done";
+      row.innerHTML=`<div class="status">✓</div><div class="name">${safe(t.icon||"⭐")} ${safe(t.name)}</div><div class="pts">+${t.points}</div>`;
+      list.appendChild(row);
+    });
+    body.appendChild(list);
+  }else{
+    const empty=document.createElement("div");
+    empty.className="calendar-empty";
+    empty.textContent=key>todayKey?"No stars yet — this day hasn't happened.":"No completed tasks recorded for this date.";
+    body.appendChild(empty);
+  }
+
+  if(Number(r.bonus)>0){
+    const bonus=document.createElement("div");
+    bonus.className="calendar-task-item done";
+    bonus.style.marginTop="7px";
+    bonus.innerHTML=`<div class="status">⭐</div><div class="name">Bonus points</div><div class="pts">+${Number(r.bonus)}</div>`;
+    body.appendChild(bonus);
+  }
+}
+
+function renderBadges(){
+  const k=kid(),t=mtotal(k),s=streak(k),days=Object.keys(k.history).filter(x=>pts(k,x)>0).length;
+  const box=$("badges");box.innerHTML="";
+  (k.badges||defaultBadges()).forEach(b=>{
+    let unlocked=false;
+    if(b.type==="activeDays")unlocked=days>=b.value;
+    else if(b.type==="streak")unlocked=s>=b.value;
+    else unlocked=t>=b.value;
+    const e=document.createElement("div");
+    e.className="badge"+(unlocked?"":" locked");
+    e.innerHTML=`<div class="ico">${unlocked?safe(b.icon):"🔒"}</div><div class="name">${safe(b.name)}</div><div class="desc">${safe(badgeRequirementText(b))}</div>`;
+    box.appendChild(e);
+  });
+}
+
+/* Candy Land reward map */
+const NODE_POS=[
+  {x:12,y:78,lx:12,ly:88,side:"center"},
+  {x:23,y:70,lx:7,ly:70,side:"left"},
+  {x:36,y:61,lx:52,ly:61,side:"right"},
+  {x:49,y:53,lx:31,ly:53,side:"left"},
+  {x:63,y:44,lx:81,ly:44,side:"right"},
+  {x:78,y:35,lx:60,ly:35,side:"left"}
+];
+function renderRewards(){
+  const k=kid(),total=mtotal(k),box=$("rewards");box.innerHTML="";
+  $("mapKidName").textContent=`${k.name}'s Adventure`;
+  $("mapAvatar").textContent=k.emoji;
+  $("rewardBalance").textContent=`${total} ⭐ earned`;
+
+  const rewards=(k.rewards||defaultRewards()).slice().sort((a,b)=>a.p-b.p);
+  const maxReward=rewards.length?rewards[rewards.length-1].p:500;
+  const progress=Math.min(1,total/maxReward);
+  $("mapProgressText").textContent=`${total} points • ${Math.round(progress*100)}% of the journey`;
+
+  const svg=$("pathSvg");svg.innerHTML="";
+  const ptsArr=NODE_POS.map(n=>`${n.x*10},${n.y*7.2}`).join(" ");
+  svg.innerHTML=`<polyline points="${ptsArr}" fill="none" stroke="#ffffffcc" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/><polyline points="${ptsArr}" fill="none" stroke="var(--mapPath)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16 16"/>`;
+
+  document.querySelectorAll(".map-node,.map-label").forEach(n=>n.remove());
+  const shell=$("rewardMap");
+  NODE_POS.forEach((n,i)=>{
+    const reward=i===0?null:rewards[i-1];
+    const threshold=i===0?0:(reward?.p ?? maxReward);
+    const labelText=i===0?"Start":(reward?.n||`Reward ${i}`);
+    const rewardIcon=i===0?"🚩":(reward?.i||"⭐");
+    const unlocked=total>=threshold;
+
+    const node=document.createElement("button");
+    node.type="button";
+    node.className="map-node "+(unlocked?"unlocked":"locked");
+    node.style.left=n.x+"%";node.style.top=n.y+"%";
+    node.setAttribute("aria-label",`${labelText}, ${i===0?"start":threshold+" points"}, ${unlocked?"unlocked":"locked"}`);
+    node.textContent=i===0?"🚩":unlocked?rewardIcon:"🔒";
+    node.addEventListener("click",()=>showMapMilestone(i,labelText,rewardIcon,threshold,unlocked));
+    shell.appendChild(node);
+
+    const label=document.createElement("div");
+    label.className="map-label "+(n.side||"center");
+    label.style.left=n.lx+"%";label.style.top=n.ly+"%";
+    label.innerHTML=`${safe(labelText)}${i===0?"":`<br><span style="font-size:9px;color:#77778c">${threshold} pts</span>`}`;
+    shell.appendChild(label);
+  });
+
+  let stage=0;
+  rewards.forEach((r,i)=>{if(total>=r.p)stage=i+1});
+  stage=Math.min(stage,NODE_POS.length-1);
+  document.querySelectorAll(".map-node")[stage]?.classList.add("current");
+  const pos=NODE_POS[stage];
+  $("playerMarker").style.left=pos.x+"%";$("playerMarker").style.top=pos.y+"%";$("playerMarker").textContent=k.emoji;
+
+  rewards.forEach(r=>{
+    const u=total>=r.p,e=document.createElement("div");e.className="reward-card";
+    e.innerHTML=`<div class="reward-ico">${r.i}</div><div class="reward-main"><div class="reward-name">${safe(r.n)}</div><div class="reward-meta">${r.p} points • ${u?"Unlocked!":"Need "+(r.p-total)+" more"}</div></div><div>${u?"✅":"🔒"}</div>`;
+    box.appendChild(e)
+  })
+}
+
+function showMapMilestone(i,labelText,rewardIcon,threshold,unlocked){
+  const k=kid();
+  $("mapDetailIcon").textContent=i===0?"🚩":rewardIcon;
+  $("mapDetailTitle").textContent=labelText;
+  if(i===0){
+    $("mapDetailText").textContent=`${k.name} starts the adventure here.`;
+  }else if(unlocked){
+    const findKey=`${mkey()}_${i}`;
+    const found=k.adventureFinds?.[findKey];
+    $("mapDetailText").innerHTML=`Unlocked at ${threshold} points! ${found?`You found ${safe(found.i)} ${safe(found.n)} here.`:`<button class="adventure-action" onclick="exploreMilestone(${i})">Explore this place ✨</button>`}`;
+    soundCheck();
+    const node=document.querySelectorAll(".map-node")[i];
+    if(node){taskConfetti(node)}
+  }else{
+    const left=Math.max(0,threshold-mtotal(k));
+    $("mapDetailText").textContent=`${left} more point${left===1?"":"s"} to unlock this stop.`;
+    tone(360,.08,"triangle",.035);
+  }
+  const marker=$("playerMarker");
+  marker.classList.remove("bounce");void marker.offsetWidth;marker.classList.add("bounce");
+}
+
+
+function exploreMilestone(i){
+  const k=kid(),rewards=(k.rewards||defaultRewards()).slice().sort((a,b)=>a.p-b.p),r=rewards[i-1];
+  if(!r||mtotal(k)<r.p)return;
+  const key=`${mkey()}_${i}`;
+  if(k.adventureFinds[key]){toast("You already explored this stop this month ✨");return}
+  const c=copy(pick(COLLECTIBLES));
+  k.adventureFinds[key]=c;k.collectibles.push({...c,source:r.n,at:new Date().toISOString()});
+  magicSound();confetti();toast(`Adventure find: ${c.i} ${c.n}!`);render();
+}
+
+function petInfo(k){return PETS.find(p=>p.id===k.pet?.type)||PETS[0]}
+function petNoise(type){
+  const sounds={dog:[330,440,330],cat:[660,880,740],bunny:[520,700],dino:[180,145,210],unicorn:[784,988,1175],panda:[300,380],fox:[520,620,520],dragon:[150,220,170]};
+  (sounds[type]||sounds.dog).forEach((f,i)=>tone(f,.14,i%2?"triangle":"sine",.05,i*.09));
+}
+function renderPet(){
+  const k=kid();settleWallet(k);
+  const p=petInfo(k),prog=petGoalProgress(k);
+  $("petCharacter").textContent=p.icon;
+  $("petName").textContent=k.pet.name;
+  $("petWallet").textContent=`${Math.round(k.wallet)} ⭐`;
+  $("petCareBar").style.width=prog.pct+"%";
+  $("petRunner").textContent=p.icon;
+  $("petRunner").style.left=`${Math.max(4,Math.min(96,prog.pct))}%`;
+  $("petGoalLabel").textContent=`Goal ${prog.goal} ⭐`;
+  $("petCareText").textContent=`${prog.today} of ${prog.goal} stars today • ${prog.pct}%`;
+  $("petMood").textContent=prog.ratio>=1?"Daily goal complete!":prog.ratio>=.65?"Almost at today's goal!":prog.ratio>=.3?"Growing stronger with every star":prog.today>0?"A good start":"Earn stars to help your pet grow today";
+  petVisualReaction(k,"render");
+}
+function renderShop(){
+  const k=kid();settleWallet(k);$("shopWallet").textContent=`${Math.round(k.wallet)} ⭐`;$("shopKidName").textContent=`${k.name}'s shop`;
+  const grid=$("shopGrid");grid.innerHTML="";
+  (k.shop||defaultShop()).forEach(item=>{
+    const can=k.wallet>=item.price,e=document.createElement("div");e.className="shop-card";
+    e.innerHTML=`<div class="shop-icon">${safe(item.icon)}</div><div class="shop-name">${safe(item.name)}</div><div class="shop-price">${item.price} ⭐</div><button class="btn ${can?"primary":"soft"}" ${can?"":"disabled"}>${item.type==="egg"?"Crack egg":"Buy reward"}</button>`;
+    e.querySelector("button").onclick=()=>buyShopItem(item.id);grid.appendChild(e)
+  });
+  $("collectionCount").textContent=`${k.collectibles.length} found`;
+  const cb=$("collectionGrid");cb.innerHTML="";
+  if(!k.collectibles.length)cb.innerHTML='<div class="calendar-empty" style="grid-column:1/-1">Mystery Eggs and adventures hide collectibles ✨</div>';
+  else k.collectibles.slice().reverse().slice(0,20).forEach(c=>{const e=document.createElement("div");e.className="collectible";e.innerHTML=`<div class="cico">${safe(c.i)}</div><div class="cname">${safe(c.n)}</div>`;cb.appendChild(e)});
+  const log=$("purchaseLog");log.innerHTML="";
+  if(!k.purchases.length)log.innerHTML='<div class="calendar-empty">Nothing purchased yet.</div>';
+  else k.purchases.slice().reverse().slice(0,6).forEach(x=>{const e=document.createElement("div");e.className="purchase-row";e.textContent=`${x.icon} ${x.name} • ${x.price} ⭐`;log.appendChild(e)});
+}
+function buyShopItem(id){
+  const k=kid(),item=k.shop.find(x=>x.id===id);if(!item)return;settleWallet(k);
+  if(k.wallet<item.price){soundUndo();toast("Not enough stars yet");return}
+  if(!confirm(`Spend ${item.price} stars on ${item.name}?`))return;
+  k.purchases.push({name:item.name,icon:item.icon,price:item.price,at:new Date().toISOString()});
+  settleWallet(k);
+  if(item.type==="egg"){
+    const c=copy(pick(COLLECTIBLES));
+    k.collectibles.push({...c,source:"Mystery Egg",at:new Date().toISOString()});
+    save();render();showEggReveal(c);
+  }else{
+    save();soundGoal();confetti();render();
+    alert(`🎉 ${item.name} purchased! Show this screen to your parent.`);
+  }
+}
+function renderPetAdmin(){
+  const k=kid(),p=petInfo(k),prog=petGoalProgress(k);
+  if(!$("petChoices"))return;
+  $("petAdminKidName").textContent=k.name;
+  $("petAdminPreview").textContent=p.icon;
+  $("petAdminPreviewName").textContent=k.pet.name;
+  $("petAdminProgress").textContent=`Today: ${prog.today}/${prog.goal} stars`;
+  $("petNameInput").value=k.pet.name;
+  const box=$("petChoices");box.innerHTML="";
+  PETS.forEach(x=>{
+    const b=document.createElement("button");b.type="button";
+    b.className="pet-choice"+(x.id===k.pet.type?" selected":"");
+    b.innerHTML=`${x.icon}<div style="font-size:8px;font-weight:900">${x.label}</div>`;
+    b.onclick=()=>{k.pet.type=x.id;petNoise(x.id);renderPetAdmin();save()};
+    box.appendChild(b);
+  });
+}
+function renderParentTodayTasks(){
+  const k=kid(),r=rec(k),box=$("parentTodayTasks");if(!box)return;box.innerHTML="";
+  const done=k.tasks.filter(t=>r.checked?.[t.id]);
+  if(!done.length){box.innerHTML='<div class="calendar-empty">No activities checked yet today.</div>';return}
+  done.forEach(t=>{
+    const row=document.createElement("div");row.className="today-parent-item";
+    row.innerHTML=`<span>${safe(t.icon)} ${safe(t.name)} • ${t.points} ⭐</span><button class="btn soft undo-today">Undo</button>`;
+    row.querySelector("button").onclick=()=>{
+      if(!confirm(`Undo ${t.name} for today?`))return;
+      r.checked[t.id]=false;
+      addWalletPoints(k,-(+t.points));
+      soundUndo();toast("Activity undone by parent");render();
+    };
+    box.appendChild(row);
+  });
+}
+function renderShopEditor(){
+  const k=kid(),box=$("shopEditor");if(!box)return;$("shopAdminKidName").textContent=k.name;box.innerHTML="";
+  k.shop.forEach((x,i)=>{
+    const row=document.createElement("div");row.className="shop-editor-row";
+    row.innerHTML=`<div class="editor-icon">${safe(x.icon)}</div><input class="shop-name-edit" data-i="${i}" value="${safe(x.name)}"><input class="shop-price-edit" data-i="${i}" type="number" min="1" value="${x.price}">${x.type==="egg"?"<div>🥚</div>":`<button class="mini-danger" data-del="${i}">×</button>`}`;
+    row.querySelectorAll("input").forEach(inp=>inp.addEventListener("change",()=>{
+      x.name=row.querySelector(".shop-name-edit").value.trim()||x.name;x.price=Math.max(1,+row.querySelector(".shop-price-edit").value||x.price);render();
+    }));
+    const del=row.querySelector("[data-del]");if(del)del.onclick=()=>{k.shop.splice(i,1);render()};
+    box.appendChild(row);
+  });
+}
+function addShopReward(){
+  const name=$("newShopItem").value.trim(),price=Math.max(1,+$("newShopPrice").value||1);if(!name)return;
+  kid().shop.push({id:"shop_"+Date.now(),icon:"🎁",name,price,type:"reward"});$("newShopItem").value="";soundCheck();render();
+}
+
+function renderBadgeEditor(){
+  const k=kid(),box=$("badgeEditor");
+  if(!box)return;
+  $("badgeKidName").textContent=k.name;
+  box.innerHTML="";
+  (k.badges||defaultBadges()).forEach((b,i)=>{
+    const row=document.createElement("div");
+    row.className="custom-editor-row";
+    const typeLabel=b.type==="monthlyPoints"?"monthly pts":b.type==="streak"?"streak days":"active days";
+    row.innerHTML=`
+      <div class="editor-icon">${safe(b.icon)}</div>
+      <input class="badge-name-input" data-i="${i}" type="text" value="${safe(b.name)}" aria-label="Badge name">
+      <div class="requirement-wrap">
+        <input class="badge-value-input" data-i="${i}" type="number" min="1" value="${b.value}" aria-label="Badge requirement">
+        <small>${typeLabel}</small>
+      </div>`;
+    box.appendChild(row);
+  });
+}
+function saveBadgeSettings(){
+  const k=kid();
+  k.badges=(k.badges||defaultBadges()).map((b,i)=>({
+    ...b,
+    name:document.querySelector(`.badge-name-input[data-i="${i}"]`)?.value.trim()||b.name,
+    value:Math.max(1,+document.querySelector(`.badge-value-input[data-i="${i}"]`)?.value||b.value)
+  }));
+  soundCheck();toast(`${k.name}'s badges updated 🏅`);render();
+}
+function resetBadgeSettings(){
+  const k=kid();
+  if(!confirm(`Reset ${k.name}'s badge goals to the defaults?`))return;
+  k.badges=defaultBadges();soundCheck();toast("Badge goals reset");render();
+}
+function renderRewardEditor(){
+  const k=kid(),box=$("rewardEditor");
+  if(!box)return;
+  $("rewardKidName").textContent=k.name;
+  box.innerHTML="";
+  (k.rewards||defaultRewards()).forEach((r,i)=>{
+    const row=document.createElement("div");
+    row.className="custom-editor-row";
+    row.innerHTML=`
+      <div class="editor-icon">${safe(r.i)}</div>
+      <input class="reward-name-input" data-i="${i}" type="text" value="${safe(r.n)}" aria-label="Adventure milestone name">
+      <div class="requirement-wrap">
+        <input class="reward-point-input" data-i="${i}" type="number" min="1" value="${r.p}" aria-label="Adventure milestone points">
+        <small>points</small>
+      </div>`;
+    box.appendChild(row);
+  });
+}
+function saveRewardSettings(){
+  const k=kid(),current=k.rewards||defaultRewards();
+  k.rewards=current.map((r,i)=>({
+    ...r,
+    n:document.querySelector(`.reward-name-input[data-i="${i}"]`)?.value.trim()||r.n,
+    p:Math.max(1,+document.querySelector(`.reward-point-input[data-i="${i}"]`)?.value||r.p)
+  })).sort((a,b)=>a.p-b.p);
+  soundCheck();toast(`${k.name}'s adventure updated 🗺️`);render();
+}
+function resetRewardSettings(){
+  const k=kid();
+  if(!confirm(`Reset ${k.name}'s Adventure Map to the defaults?`))return;
+  k.rewards=defaultRewards();soundCheck();toast("Adventure Map reset");render();
+}
+
+function renderThemeGrid(){
+  const box=$("themeGrid"); if(!box)return;
+  const k=kid();
+  if($("themeKidName"))$("themeKidName").textContent=k.name;
+  box.innerHTML="";
+  THEMES.forEach(t=>{
+    const b=document.createElement("button");b.type="button";
+    b.className="theme-choice"+((k.theme||"candy")===t.id?" selected":"");
+    b.innerHTML=`<div class="theme-swatch" style="background:${t.swatch}"></div>${t.name}`;
+    b.addEventListener("click",()=>{
+      k.theme=t.id;
+      soundCheck();
+      toast(`${t.name} theme selected for ${k.name} ✨`);
+      render();
+    });
+    box.appendChild(b);
+  });
+}
+
+function lockParentZone(silent=false){
+  if(!unlocked && !pinEntry)return;
+  unlocked=false;
+  pinEntry="";
+  editingKidId=null;
+  if("speechSynthesis" in window)try{window.speechSynthesis.cancel()}catch(e){}
+  renderParent();
+  if(!silent)toast("Parent Zone locked 🔐");
+}
+
+function renderParent(){
+  $("locked").style.display=unlocked?"none":"block";$("parentContent").style.display=unlocked?"block":"none";
+  renderPin();if(!unlocked)return;
+  $("parentKid").textContent=kid().name;$("goalInput").value=kid().goal;
+  renderKidsAdmin();renderKidForm();renderTaskEditor();renderBadgeEditor();renderRewardEditor();renderShopEditor();renderPetAdmin();renderParentTodayTasks();renderThemeGrid();renderVoicePicker()
+}
+function renderPin(){
+  const dots=$("pinDots");dots.innerHTML="";for(let i=0;i<4;i++){const d=document.createElement("div");d.className="dot"+(i<pinEntry.length?" on":"");dots.appendChild(d)}
+  const pad=$("keypad");pad.innerHTML="";
+  ["1","2","3","4","5","6","7","8","9","⌫","0","✓"].forEach(x=>{const b=document.createElement("button");b.className="key";b.textContent=x;b.addEventListener("click",()=>pinKey(x));pad.appendChild(b)})
+}
+function pinKey(x){
+  if(x==="⌫"){pinEntry=pinEntry.slice(0,-1);soundUndo()}
+  else if(x==="✓"){if(pinEntry===state.pin){unlocked=true;pinEntry="";soundGoal();toast("Parent Zone unlocked 🔓")}else{pinEntry="";soundUndo();toast("Incorrect PIN")}}
+  else if(pinEntry.length<4){pinEntry+=x;tone(480,.06,"sine",.025)}
+  renderParent()
+}
+function renderKidsAdmin(){
+  const box=$("kidsAdmin");box.innerHTML="";
+  Object.entries(state.kids).forEach(([id,k])=>{
+    const e=document.createElement("div");e.className="kid-admin-card";
+    e.innerHTML=`<div class="big-avatar">${k.emoji}</div><div class="kid-admin-main"><strong>${safe(k.name)}</strong><small>${mtotal(k)} points this month</small></div><button class="btn soft editKid">Edit</button><button class="btn danger deleteKid">Delete</button>`;
+    e.querySelector(".editKid").addEventListener("click",()=>startEditKid(id));
+    e.querySelector(".deleteKid").addEventListener("click",()=>deleteKid(id));
+    box.appendChild(e)
+  })
+}
+function renderKidForm(){
+  $("kidFormTitle").textContent=editingKidId?"Edit child":"Add a child";
+  $("saveKidBtn").textContent=editingKidId?"Save changes":"Add child";
+  $("cancelKidEdit").style.display=editingKidId?"inline-block":"none";
+
+  if(editingKidId){
+    const k=state.kids[editingKidId];
+    $("kidNameInput").value=k.name;selectedAvatar=k.emoji;
+    selectedColor=Math.max(0,COLORS.findIndex(c=>c[0]===k.a&&c[1]===k.b));
+  } else if(!$("kidNameInput").value){
+    selectedAvatar=selectedAvatar||AVATARS[0];
+  }
+
+  const ag=$("avatarGrid");ag.innerHTML="";
+  AVATARS.forEach(a=>{
+    const b=document.createElement("button");b.className="avatar-choice"+(a===selectedAvatar?" selected":"");b.textContent=a;
+    b.addEventListener("click",()=>{selectedAvatar=a;renderKidForm()});ag.appendChild(b)
+  });
+  const cg=$("colorGrid");cg.innerHTML="";
+  COLORS.forEach((c,i)=>{
+    const b=document.createElement("button");b.className="color-choice"+(i===selectedColor?" selected":"");b.style.background=`linear-gradient(135deg,${c[0]},${c[1]})`;
+    b.addEventListener("click",()=>{selectedColor=i;renderKidForm()});cg.appendChild(b)
+  })
+}
+function resetKidForm(){
+  editingKidId=null;$("kidNameInput").value="";selectedAvatar=AVATARS[0];selectedColor=0;renderParent()
+}
+function startEditKid(id){
+  editingKidId=id;const k=state.kids[id];$("kidNameInput").value=k.name;selectedAvatar=k.emoji;selectedColor=Math.max(0,COLORS.findIndex(c=>c[0]===k.a&&c[1]===k.b));renderParent()
+}
+function saveKid(){
+  const name=$("kidNameInput").value.trim();if(!name){toast("Enter a child name");return}
+  const color=COLORS[selectedColor]||COLORS[0];
+  if(editingKidId){
+    const k=state.kids[editingKidId];k.name=name;k.emoji=selectedAvatar;k.a=color[0];k.b=color[1];
+    state.activeKid=editingKidId;toast("Child updated ✨")
+  }else{
+    const id="kid_"+Date.now();state.kids[id]={name,emoji:selectedAvatar,a:color[0],b:color[1],goal:20,history:{},tasks:defaultTasks(),badges:defaultBadges(),rewards:defaultRewards(),theme:"candy",wallet:0,walletMonth:dkeySafe(),shop:defaultShop(),collectibles:[],purchases:[],pet:{type:"dog",name:"Buddy",care:20},adventureFinds:{}};state.activeKid=id;toast("Child added 🎉")
+  }
+  resetKidForm();render()
+}
+function deleteKid(id){
+  const ids=Object.keys(state.kids);if(ids.length===1){toast("Keep at least one child");return}
+  if(!confirm(`Delete ${state.kids[id].name} and all of their points?`))return;
+  delete state.kids[id];if(state.activeKid===id)state.activeKid=Object.keys(state.kids)[0];if(editingKidId===id)editingKidId=null;render()
+}
+function renderTaskEditor(){
+  const k=kid(),box=$("taskEditor");box.innerHTML="";
+  k.tasks.forEach((t,i)=>{
+    const e=document.createElement("div");e.className="editrow";e.innerHTML=`<input type="text" value="${attr(t.name)}"><input type="number" min="1" value="${t.points}"><button class="btn danger">Delete</button>`;
+    const ins=e.querySelectorAll("input");ins[0].addEventListener("change",ev=>{t.name=ev.target.value.trim()||t.name;render()});ins[1].addEventListener("change",ev=>{t.points=Math.max(1,+ev.target.value||1);render()});e.querySelector("button").addEventListener("click",()=>{k.tasks.splice(i,1);render()});box.appendChild(e)
+  })
+}
+
+$("voiceBtn").addEventListener("click",()=>{
+  state.voice=!state.voice;
+  if(!state.voice && "speechSynthesis" in window) window.speechSynthesis.cancel();
+  if(state.voice){toast("Encouraging voice on 🗣️");setTimeout(()=>speak("Voice encouragement is on!",true),100)}
+  else toast("Encouraging voice off 🤐");
+  render()
+});
+$("playerMarker").addEventListener("click",()=>{
+  const m=$("playerMarker");
+  m.classList.remove("bounce");void m.offsetWidth;m.classList.add("bounce");
+  soundCheck();taskConfetti(m);toast(`${kid().name} is on the move! ⭐`);
+});
+$("soundBtn").addEventListener("click",()=>{state.sound=!state.sound;if(state.sound){soundCheck();toast("Sounds on 🔊")}else toast("Sounds off 🔇");render()});
+$("petSoundBtn").addEventListener("click",()=>{const k=kid();petNoise(k.pet.type);starsOn($("petCharacter"));animatePet("pet-wiggle");$("petFace").textContent="🥰";$("petSpeech").textContent="💕"});
+$("petCharacter").addEventListener("click",()=>{const k=kid();petNoise(k.pet.type);animatePet("pet-hop");starsOn($("petCharacter"));$("petFace").textContent="😄"});
+$("petHopBtn").addEventListener("click",()=>{const k=kid();petNoise(k.pet.type);animatePet("pet-hop");$("petFace").textContent="😄";$("petSpeech").textContent="Boing! 🐾"});
+$("petPlayBtn").addEventListener("click",()=>{const k=kid();magicSound();animatePet("pet-jump");starsOn($("petCharacter"));$("petFace").textContent="🤩";$("petSpeech").textContent="✨"});
+$("savePetBtn").addEventListener("click",()=>{const k=kid(),n=$("petNameInput").value.trim();if(n)k.pet.name=n;petNoise(k.pet.type);toast(`${k.pet.name} saved 🐾`);render()});
+$("voiceSelect").addEventListener("change",e=>{state.selectedVoiceName=e.target.value;save();toast("Voice saved")});
+$("testVoiceBtn").addEventListener("click",()=>speak(`Hi ${kid().name}. Great job today!`,true));
+$("eggCloseBtn").addEventListener("click",closeEggReveal);
+$("eggOverlay").addEventListener("click",e=>{if(e.target===$("eggOverlay"))closeEggReveal()});
+$("addShopItem").addEventListener("click",addShopReward);
+$("saveKidBtn").addEventListener("click",saveKid);
+$("cancelKidEdit").addEventListener("click",resetKidForm);
+$("addTask").addEventListener("click",()=>{const n=$("newTask").value.trim(),p=Math.max(1,+$("newPts").value||1);if(!n)return;kid().tasks.push({id:"t_"+Date.now(),name:n,points:p,icon:smartTaskIcon(n)});$("newTask").value="";soundCheck();render()});
+$("saveGoal").addEventListener("click",()=>{kid().goal=Math.max(1,+$("goalInput").value||1);soundCheck();toast("Daily goal updated");render()});
+$("saveBadges").addEventListener("click",saveBadgeSettings);
+$("resetBadges").addEventListener("click",resetBadgeSettings);
+$("saveRewards").addEventListener("click",saveRewardSettings);
+$("resetRewards").addEventListener("click",resetRewardSettings);
+$("addBonus").addEventListener("click",()=>{
+  const k=kid(),p=Math.max(1,+$("bonus").value||1),r=rec(k),beforePoints=pts(k,dkey()),before=beforePoints>=k.goal;
+  r.bonus=(r.bonus||0)+p;
+  addWalletPoints(k,p);
+  const afterPoints=pts(k,dkey());
+  soundCheck();toast(`+${p} bonus ⭐`);
+  setTimeout(()=>taskVoice(k,beforePoints,afterPoints),120);
+  if(afterPoints>=k.goal&&!before){setTimeout(()=>{soundGoal();confetti()},150)}
+  render()
+});
+$("changePin").addEventListener("click",()=>{const p=String($("pinInput").value).trim();if(!/^\d{4}$/.test(p)){toast("PIN must be 4 digits");return}state.pin=p;$("pinInput").value="";toast("PIN changed 🔐");render()});
+$("lockBtn").addEventListener("click",()=>lockParentZone(false));
+$("resetBtn").addEventListener("click",()=>{if(confirm("Reset all kids, tasks and points?")){localStorage.removeItem(KEY);state=starterState();unlocked=false;pinEntry="";editingKidId=null;render()}});
+$("prevMonthBtn").addEventListener("click",()=>{
+  calendarViewDate=new Date(calendarViewDate.getFullYear(),calendarViewDate.getMonth()-1,1);
+  selectedCalendarDate=dkey(new Date(calendarViewDate.getFullYear(),calendarViewDate.getMonth(),1));
+  soundCheck();renderCalendar();
+});
+$("nextMonthBtn").addEventListener("click",()=>{
+  calendarViewDate=new Date(calendarViewDate.getFullYear(),calendarViewDate.getMonth()+1,1);
+  selectedCalendarDate=dkey(new Date(calendarViewDate.getFullYear(),calendarViewDate.getMonth(),1));
+  soundCheck();renderCalendar();
+});
+
+
+/* Security: Parent Zone never stays unlocked after leaving/backgrounding the app. */
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden)lockParentZone(true);
+});
+window.addEventListener("pagehide",()=>lockParentZone(true));
+window.addEventListener("blur",()=>{
+  // Small delay avoids locking on ordinary taps, but catches switching apps/windows.
+  setTimeout(()=>{if(!document.hasFocus())lockParentZone(true)},120);
+});
+
+document.querySelectorAll(".nav").forEach(b=>b.addEventListener("click",()=>{
+  const leavingParent=!b.dataset.panel.includes("parentPanel") && $("parentPanel").classList.contains("active");
+  if(leavingParent)lockParentZone(true);
+  const enteringPet=b.dataset.panel==="petPanel" && !$("petPanel").classList.contains("active");
+  document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$(b.dataset.panel).classList.add("active");
+  tone(440,.055,"sine",.022);render();
+  if(enteringPet)setTimeout(()=>petVisualReaction(kid(),"visit"),180);
+}));
+
+try{
+  render();
+}catch(err){
+  console.error(err);
+  const g=document.getElementById("greeting");
+  if(g)g.textContent="Kids Daily Stars";
+  const t=document.getElementById("toast");
+  if(t){t.textContent="The app had trouble loading. Refresh once, or reopen the page.";t.classList.add("show");}
+}
+if("speechSynthesis" in window)window.speechSynthesis.onvoiceschanged=()=>{try{renderVoicePicker()}catch(e){}};
+</script>
+</body>
+</html>
